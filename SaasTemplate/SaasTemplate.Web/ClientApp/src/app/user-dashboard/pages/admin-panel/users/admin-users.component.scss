@@ -1,0 +1,22 @@
+@import "shared";
+
+/* Sorting, paging and the phone cards come from `app-data-grid`; the filter
+   row and the pills from `.studio` (src/scss/_studio.scss). */
+
+.cell-name {
+  font-weight: 500;
+}
+
+.cell-email {
+  display: block;
+  overflow: hidden;
+  color: var(--ink-soft);
+  text-overflow: ellipsis;
+}
+
+.cell-date {
+  color: var(--ink-soft);
+}
+
+/* A user with more than one extra role gets a little air between the pills. */
+.tag + .tag { margin-left: 0.3rem; }

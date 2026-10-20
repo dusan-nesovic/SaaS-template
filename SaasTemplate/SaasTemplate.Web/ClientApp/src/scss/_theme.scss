@@ -1,0 +1,38 @@
+@import "colors";
+
+/* Light (default) */
+:root {
+  --bg: #{$app-bg};
+  --panel: #{$app-panel};
+  --text: #{$app-text};
+  --muted: #{$app-muted};
+  --line: #{$app-line};
+  --accent: #{$app-accent};
+  --accent2: #{$app-accent2};
+  --gold: #{$app-gold};
+  --ok: #{$app-ok};
+  --radius: #{$app-radius};
+  --shadow: #{$app-shadow};
+  --menu-bg: #{$app-menu-bg};
+  --menu-border: #{$app-menu-border};
+  --menu-hover: #{$app-menu-hover};
+  --icons: rgba(26, 22, 48, .22);
+  --danger: #{$app-danger};
+  --neutral: #{$app-neutral};
+  --input-bg: #fafafa;
+}
+
+/* Dark */
+[data-theme='dark'] {
+  --bg: #{$app-dark-bg};
+  --panel: #{$app-dark-panel};
+  --text: #{$app-dark-text};
+  --muted: #{$app-dark-muted};
+  --line: #{$app-dark-line};
+  --shadow: #{$app-dark-shadow};
+  --menu-hover: #{$app-dark-menu-hover};
+  --icons: rgba(243, 244, 255, .22);
+  --danger: #{$app-danger-dark};
+  --neutral: #{$app-neutral-dark};
+  --input-bg: #1a1d35;
+}

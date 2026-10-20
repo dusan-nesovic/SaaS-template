@@ -1,0 +1,137 @@
+<app-cms-content [title]="'MENU.DASHBOARD' | translate" [description]="'PAGE_SUB.DASHBOARD' | translate">
+  <ng-container btn>
+    @if (canSwitchMode) {
+      <div class="mode-toggle" role="tablist">
+        <button type="button" class="mode-btn" role="tab" [class.is-active]="mode === 'user'" [attr.aria-selected]="mode === 'user'" (click)="setMode('user')">
+          {{ 'DASHBOARD.USER_OVERVIEW' | translate }}
+        </button>
+        <button type="button" class="mode-btn" role="tab" [class.is-active]="mode === 'admin'" [attr.aria-selected]="mode === 'admin'" (click)="setMode('admin')">
+          {{ 'DASHBOARD.ADMIN_OVERVIEW' | translate }}
+        </button>
+      </div>
+    }
+  </ng-container>
+
+  <!-- The user's home screen: replace these cards with the numbers that matter in the app. -->
+  @if (mode === 'user' && dashboard; as d) {
+    <div class="kpi-grid">
+      <div class="kpi is-next">
+        <span class="kpi-label">{{ 'DASHBOARD.WELCOME' | translate }}</span>
+        <span class="kpi-value">{{ d.firstName }}</span>
+        <div class="kpi-foot"><span class="kpi-note">{{ d.email }}</span></div>
+      </div>
+
+      <div class="kpi">
+        <span class="kpi-label">{{ 'DASHBOARD.MEMBER_SINCE' | translate }}</span>
+        <span class="kpi-value">{{ formatDate(d.memberSince) }}</span>
+        <div class="kpi-foot"><span class="tag muted">{{ 'DASHBOARD.DAYS_WITH_US' | translate: { n: d.daysSinceRegistration } }}</span></div>
+      </div>
+
+      <div class="kpi" [class.is-flagged]="!d.emailConfirmed">
+        <span class="kpi-label">{{ 'DASHBOARD.EMAIL_STATUS' | translate }}</span>
+        <span class="kpi-value">
+          {{ (d.emailConfirmed ? 'DASHBOARD.EMAIL_CONFIRMED' : 'DASHBOARD.EMAIL_NOT_CONFIRMED') | translate }}
+        </span>
+        <div class="kpi-foot">
+          <a class="link" routerLink="/app/dashboard/preference">{{ 'DASHBOARD.OPEN_PREFERENCES' | translate }}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header"><h2>{{ 'DASHBOARD.GET_STARTED' | translate }}</h2></div>
+      <div class="panel-body">
+        <p class="empty">{{ 'DASHBOARD.GET_STARTED_TEXT' | translate }}</p>
+      </div>
+    </div>
+  }
+
+  @if (mode === 'admin' && adminDashboard; as a) {
+    <div class="kpi-grid">
+      <div class="kpi">
+        <span class="kpi-label">{{ 'DASHBOARD.TOTAL_USERS' | translate }}</span>
+        <span class="kpi-value">{{ a.kpi.totalUsers }}</span>
+        <div class="kpi-foot"><span class="tag ok">{{ 'DASHBOARD.PLUS_LAST_30D' | translate: { n: a.kpi.newUsers30Days } }}</span></div>
+      </div>
+
+      <div class="kpi" [class.is-flagged]="a.kpi.unconfirmedUsers > 0">
+        <span class="kpi-label">{{ 'DASHBOARD.CONFIRMED_USERS' | translate }}</span>
+        <span class="kpi-value">{{ a.kpi.confirmedUsers }}</span>
+        <div class="kpi-foot"><span class="tag warn">{{ a.kpi.unconfirmedUsers }} {{ 'DASHBOARD.EMAIL_NOT_CONFIRMED' | translate }}</span></div>
+      </div>
+
+      <div class="kpi" [class.is-flagged]="a.errors.errorsLast7Days > 0">
+        <span class="kpi-label">{{ 'DASHBOARD.ERRORS' | translate }}</span>
+        <span class="kpi-value">{{ a.errors.errorsLast7Days }}</span>
+        <div class="kpi-foot">
+          <span class="tag muted">{{ a.errors.errorsLast30Days }} {{ 'DASHBOARD.LAST_30D' | translate }}</span>
+          <a class="tag muted tag-link" routerLink="/app/dashboard/error-logs">{{ 'DASHBOARD.VIEW_LOGS' | translate }}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="panel">
+        <div class="panel-header"><h2>{{ 'DASHBOARD.REGISTRATIONS_30D' | translate }}</h2></div>
+        <div class="panel-body">
+          <div class="spark">
+            @for (day of a.registrationsByDay; track day.date) {
+              <span class="spark-bar" [title]="formatShortDate(day.date) + ': ' + day.count">
+                <span class="spark-fill" [style.height.%]="seriesPercent(day.count)"></span>
+              </span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h2>{{ 'DASHBOARD.EMAIL_VERIFICATION' | translate }}</h2></div>
+        <div class="panel-body">
+          @if (emailStatusSegments.length) {
+            <app-donut-chart [segments]="emailStatusSegments" [caption]="'DASHBOARD.USERS_CAPTION' | translate"></app-donut-chart>
+          } @else {
+            <p class="empty">{{ 'DASHBOARD.NO_DATA_YET' | translate }}</p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header"><h2>{{ 'DASHBOARD.RECENT_USERS' | translate }}</h2></div>
+      <div class="panel-body">
+        @if (a.recentUsers.length === 0) {
+          <p class="empty">{{ 'DASHBOARD.NO_DATA_YET' | translate }}</p>
+        } @else {
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>{{ 'DASHBOARD.COL_USER' | translate }}</th>
+                  <th>{{ 'DASHBOARD.COL_EMAIL' | translate }}</th>
+                  <th>{{ 'DASHBOARD.COL_STATUS' | translate }}</th>
+                  <th class="num">{{ 'DASHBOARD.COL_REGISTERED' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (u of a.recentUsers; track u.userId) {
+                  <tr>
+                    <td class="cell-name">
+                      <a class="link" [routerLink]="['/app/dashboard/admin/users/edit', u.userId]">{{ userDisplayName(u) }}</a>
+                    </td>
+                    <td class="cell-email">{{ u.email }}</td>
+                    <td>
+                      <span [class]="u.emailConfirmed ? 'tag ok' : 'tag warn'">
+                        {{ (u.emailConfirmed ? 'DASHBOARD.EMAIL_CONFIRMED' : 'DASHBOARD.EMAIL_NOT_CONFIRMED') | translate }}
+                      </span>
+                    </td>
+                    <td class="num">{{ formatDate(u.createdOn) }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</app-cms-content>

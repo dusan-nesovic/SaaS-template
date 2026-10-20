@@ -1,0 +1,27 @@
+/* ==============================
+   Spacings
+============================== */
+
+:root {
+  --space-0: 0;
+  --space-1: .25rem;  // 4px
+  --space-2: .5rem;   // 8px
+  --space-3: .75rem;  // 12px
+  --space-4: 1rem;    // 16px (base)
+  --space-5: 1.25rem; // 20px
+  --space-6: 1.5rem;  // 24px
+  --space-7: 1.75rem; // 28px
+  --space-8: 2rem;    // 32px
+
+  --page-pad: 1.5rem;
+
+  --font-xs: 0.7rem;   // helper text, meta, divider
+  --font-sm: 0.75rem;  // labels, captions
+  --font-base: 0.8rem; // DEFAULT (inputs, body text)
+  --font-md: 0.85rem;  // buttons, emphasized text
+  --font-lg: 0.9rem;   // titles in forms, callouts
+}
+
+@media (max-width: 768px) {
+  :root { --page-pad: 1rem; }
+}

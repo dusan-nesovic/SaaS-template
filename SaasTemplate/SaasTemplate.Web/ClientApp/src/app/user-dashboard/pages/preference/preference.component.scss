@@ -1,0 +1,58 @@
+@import "shared";
+
+/* Two settings, so the panel is narrow rather than a full-width slab with a
+   control floating at the far right. */
+.pref-panel {
+  width: min(100%, 38rem);
+}
+
+.pref-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 0;
+
+  &:first-child { padding-top: 0; }
+  &:last-child { padding-bottom: 0; }
+
+  & + .pref-row { border-top: 1px solid var(--hair-soft); }
+}
+
+.pref-copy {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.pref-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.pref-hint {
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: var(--ink-soft);
+}
+
+.pref-control {
+  flex: none;
+  width: 11rem;
+}
+
+/* The theme button keeps its label centred next to the icon. */
+button.pref-control {
+  justify-content: center;
+}
+
+@include mobile {
+  .pref-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .pref-control { width: 100%; }
+}

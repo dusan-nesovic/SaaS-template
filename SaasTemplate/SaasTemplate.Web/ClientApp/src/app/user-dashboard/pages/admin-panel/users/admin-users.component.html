@@ -1,0 +1,61 @@
+<div class="panel">
+  <div class="panel-body">
+    <div class="filter-bar">
+      <div class="mode-toggle" role="group" [attr.aria-label]="'ROLES' | translate">
+        @for (option of roleOptions; track option.value) {
+          <button type="button" class="mode-btn" [class.is-active]="role === option.value" (click)="setRole(option.value)">
+            {{ option.labelKey | translate }}
+          </button>
+        }
+      </div>
+
+      <div class="filter-search">
+        <i class="pi pi-search" aria-hidden="true"></i>
+        <input
+          class="input"
+          type="search"
+          [(ngModel)]="search"
+          (ngModelChange)="applyFilters()"
+          [placeholder]="'ADMIN.SEARCH_USERS' | translate"
+          [attr.aria-label]="'ADMIN.SEARCH_USERS' | translate" />
+      </div>
+    </div>
+
+    @if (isLoaded) {
+      <app-data-grid
+        [rows]="filteredUsers"
+        [columns]="columns"
+        [defaultSort]="{ key: 'created', direction: 'desc' }"
+        emptyKey="ADMIN.NO_USERS"
+        [clickable]="true"
+        (rowClick)="onEdit($event)">
+        <ng-template appGridCell="name" let-user>
+          <span class="cell-name">{{ fullName(user) }}</span>
+        </ng-template>
+
+        <ng-template appGridCell="email" let-user>
+          <span class="cell-email" [title]="user.userName">{{ user.userName }}</span>
+        </ng-template>
+
+        <ng-template appGridCell="roles" let-user>
+          <!-- Everyone is a User; only the roles on top of that say anything. -->
+          @for (role of user.userRoles; track role) {
+            @if (role !== userRoles.User) {
+              <span [class]="role === userRoles.Admin ? 'tag rose' : 'tag'">{{ role | enumName: userRoles }}</span>
+            }
+          }
+        </ng-template>
+
+        <ng-template appGridCell="created" let-user>
+          <span class="cell-date">{{ user.createdOn | date: 'mediumDate' }}</span>
+        </ng-template>
+
+        <ng-template appGridCell="action" let-user>
+          <button class="btn secondary" type="button" (click)="$event.stopPropagation(); onEdit(user)">{{ 'EDIT' | translate }}</button>
+        </ng-template>
+      </app-data-grid>
+    }
+  </div>
+</div>
+
+<router-outlet></router-outlet>

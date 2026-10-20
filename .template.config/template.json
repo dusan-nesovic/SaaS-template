@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Dusan",
+  "classifications": [ "Web", "SaaS", "ASP.NET Core", "Angular" ],
+  "identity": "SaasTemplate.Fullstack",
+  "name": "SaaS starter (ASP.NET Core + Angular + PostgreSQL)",
+  "description": "Public landing page and a signed-in area with auth (JWT + Google), dashboard, admin panel, error log viewer and user preferences.",
+  "shortName": "saas",
+  "sourceName": "SaasTemplate",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "symbols": {
+    "appTitle": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "Display name shown in the UI and in emails.",
+      "defaultValue": "SaaS Template",
+      "replaces": "SaaS Template"
+    },
+    "googleClientId": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "Google OAuth client id (appsettings.json and ClientApp/libs/common/constants.ts).",
+      "defaultValue": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+      "replaces": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+    },
+    "kebabName": {
+      "type": "derived",
+      "valueSource": "name",
+      "valueTransform": "kebabCase",
+      "replaces": "saas-template",
+      "description": "Docker compose project name and server folder."
+    },
+    "upperName": {
+      "type": "derived",
+      "valueSource": "name",
+      "valueTransform": "upperCase",
+      "replaces": "SAASTEMPLATE",
+      "description": "Prefix of the design-time connection string variable (SAASTEMPLATE_DB)."
+    }
+  },
+  "forms": {
+    "kebabCase": { "identifier": "kebabCase" },
+    "upperCase": { "identifier": "upperCase" }
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "exclude": [
+            ".git/**",
+            ".vs/**",
+            "**/node_modules/**",
+            "**/bin/**",
+            "**/obj/**",
+            "**/.angular/**",
+            "**/dist/**",
+            "Logs/**",
+            "SaasTemplate/SaasTemplate.Web/Logs/**",
+            ".env.*",
+            "TEMPLATE.md",
+            ".claude/settings.local.json",
+            ".claude/worktrees/**"
+          ]
+        }
+      ]
+    }
+  ]
+}

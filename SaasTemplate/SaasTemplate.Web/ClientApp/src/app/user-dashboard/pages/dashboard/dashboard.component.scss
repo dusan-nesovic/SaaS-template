@@ -1,0 +1,157 @@
+@import "shared";
+
+/* Panels, tags and tables come from `.studio` (src/scss/_studio.scss). This
+   file holds what only the dashboard draws: the KPI row, the event lists, the
+   breakdown bars and the two 30-day sparklines.
+
+   The charts are deliberately monochrome - one rose wash for the series, ink
+   for the numbers - so a page full of figures still reads as the same quiet
+   paper as the landing page. */
+
+/* =========================
+   KPI row
+========================= */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.25rem;
+  border: 1px solid var(--hair-soft);
+  border-radius: 16px;
+  background: var(--paper-raised);
+  box-shadow: var(--lift);
+
+  /* The next event is the one card worth a whisper of colour. */
+  &.is-next { border-color: var(--accent-hair); }
+
+  &.is-quiet {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  &.is-flagged { border-color: color-mix(in srgb, var(--warn-ink) 45%, transparent); }
+}
+
+.kpi-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* The figure is the one thing on the card meant to be read from across the
+   room; in a sans it needs weight rather than a different typeface to do it. */
+.kpi-value {
+  font-family: var(--page-display);
+  font-size: clamp(1.7rem, 3.6vw, 2.1rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+
+  small {
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--ink-faint);
+  }
+}
+
+.kpi-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 1rem;
+  margin-top: 0.3rem;
+}
+
+.kpi-foot-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.kpi-foot-head {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.kpi-note {
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: var(--ink-soft);
+}
+
+/* =========================
+   Two panels side by side
+========================= */
+.split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+/* =========================
+   Sparklines
+========================= */
+.spark {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 6rem;
+}
+
+.spark-bar {
+  display: flex;
+  align-items: flex-end;
+  flex: 1;
+  height: 100%;
+  min-width: 0;
+}
+
+.spark-fill {
+  width: 100%;
+  min-height: 1px;
+  border-radius: 2px 2px 0 0;
+  background: var(--accent-hair);
+
+}
+
+/* =========================
+   Recent users
+========================= */
+.table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-name {
+  white-space: nowrap;
+}
+
+/* A tag that links on to the page behind the number. */
+.tag-link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+
+  &:hover { border-color: currentColor; }
+}
+
+/* An address broken over several lines is unreadable; on a narrow screen the
+   table scrolls sideways inside .table-wrap instead. */
+.cell-email {
+  color: var(--ink-soft);
+  white-space: nowrap;
+}

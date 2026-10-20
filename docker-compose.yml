@@ -1,0 +1,64 @@
+# Base stack - shared by every environment.
+# Do not run this file on its own; it has no environment values.
+# Use ./docker.ps1 <dev|prod> <command>, which layers the matching
+# docker-compose.<environment>.yml and .env.<environment> on top.
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?missing in env file}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?missing in env file}
+      POSTGRES_DB: ${POSTGRES_DB:?missing in env file}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: ./SaasTemplate
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:?missing in env file}
+      ASPNETCORE_URLS: http://+:8080
+      # Everything below comes from the env file. `__` maps to `:` in IConfiguration,
+      # so DbSettings__ConnectionString overrides the DbSettings:ConnectionString section.
+      DbSettings__ConnectionString: "Host=db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};"
+      JwtSettings__Secret: ${JWT_SECRET:?missing in env file}
+      JwtSettings__ValidIssuer: ${JWT_VALID_ISSUER:?missing in env file}
+      JwtSettings__ValidAudience: ${JWT_VALID_AUDIENCE:?missing in env file}
+      # AddCustomCors reads Cors:AllowedOrigins as a string[]; `__0` is the first element
+      Cors__AllowedOrigins__0: ${CORS_ALLOWED_ORIGIN:?missing in env file}
+      # Base address for the links in confirmation and password-reset emails
+      CLIENT_URL: ${CORS_ALLOWED_ORIGIN}
+      GoogleAuthSettings__ClientSecret: ${GOOGLE_CLIENT_SECRET:?missing in env file}
+      EmailSettings__Password: ${EMAIL_PASSWORD:?missing in env file}
+      Logging__LogLevel__Default: ${LOG_LEVEL:-Information}
+    ports:
+      - "${API_PORT:-8080}:8080"
+    volumes:
+      # ErrorLogService writes the exception log here and reads it back for the admin pages, so it must outlive the container
+      - api_logs:/app/Logs
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./SaasTemplate
+      dockerfile: Dockerfile.angular
+      args:
+        # Picks the Angular build, which bakes in environment.ts vs environment.prod.ts
+        NPM_BUILD_SCRIPT: ${NPM_BUILD_SCRIPT:?missing in env file}
+    ports:
+      - "${WEB_PORT:-4200}:4200"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
+  api_logs:

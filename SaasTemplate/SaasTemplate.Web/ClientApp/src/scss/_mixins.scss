@@ -1,0 +1,31 @@
+@import "breakpoints";;
+
+/* ==============================
+   Mixins
+============================== */
+
+/* Generic */
+@mixin down($w) {
+  @media (max-width: $w) {
+    @content;
+  }
+}
+
+@mixin up($w) {
+  @media (min-width: $w) {
+    @content;
+  }
+}
+
+/* Convenience */
+@mixin mobile {
+  @include down($bp-sm) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @include down($bp-md) {
+    @content;
+  }
+}

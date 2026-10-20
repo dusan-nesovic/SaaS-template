@@ -1,0 +1,197 @@
+@import "shared";
+
+/* Same language as `app-select`: a hairline trigger that opens a panel joined
+   to it. Tokens come from `.studio` (src/scss/_studio.scss), with fallbacks. */
+.dp-wrap {
+  position: relative;
+  display: inline-block;
+  width: 18rem;
+  max-width: 100%;
+}
+
+/* =========================
+   Trigger
+========================= */
+.dp-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  height: 40px;
+  padding: 0 0.85rem;
+  border: 1px solid var(--hair, rgba(35, 32, 43, 0.13));
+  border-radius: 12px;
+  background: var(--field-bg, #fdfcfb);
+  color: var(--ink, #23202b);
+  font-family: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+
+  &:hover { border-color: var(--ink-faint, rgba(35, 32, 43, 0.44)); }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-hair, rgba(255, 95, 154, 0.45));
+    outline-offset: 2px;
+  }
+}
+
+.dp-open .dp-trigger {
+  border-color: var(--ink-faint, rgba(35, 32, 43, 0.44));
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.dp-open.open-up .dp-trigger {
+  border-radius: 0 0 12px 12px;
+}
+
+.dp-icon,
+.dp-arrow {
+  flex-shrink: 0;
+  color: var(--ink-faint, rgba(35, 32, 43, 0.44));
+}
+
+.dp-icon { font-size: 0.75rem; }
+
+.dp-arrow {
+  font-size: 0.55rem;
+  transition: transform 0.15s ease;
+}
+
+.dp-open .dp-arrow { transform: rotate(180deg); }
+
+.dp-value { flex: 1; }
+
+.dp-placeholder {
+  color: var(--ink-faint, rgba(35, 32, 43, 0.44));
+  font-weight: 300;
+}
+
+/* =========================
+   Panel
+========================= */
+.dp-panel {
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  padding: 0.75rem;
+  border: 1px solid var(--ink-faint, rgba(35, 32, 43, 0.44));
+  border-top-color: var(--hair-soft, rgba(35, 32, 43, 0.07));
+  border-radius: 0 0 12px 12px;
+  background: var(--paper-raised, #ffffff);
+  box-shadow: var(--lift, 0 12px 32px rgba(20, 16, 32, 0.06));
+  user-select: none;
+}
+
+.dp-open.open-up .dp-panel {
+  top: auto;
+  bottom: calc(100% - 1px);
+  border-radius: 12px 12px 0 0;
+  border-top-color: var(--ink-faint, rgba(35, 32, 43, 0.44));
+  border-bottom-color: var(--hair-soft, rgba(35, 32, 43, 0.07));
+}
+
+/* =========================
+   Navigation
+========================= */
+.dp-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.dp-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--hair, rgba(35, 32, 43, 0.13));
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-faint, rgba(35, 32, 43, 0.44));
+  font-size: 0.6rem;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    color: var(--ink, #23202b);
+    border-color: var(--ink-faint, rgba(35, 32, 43, 0.44));
+  }
+}
+
+.dp-month-label {
+  font-family: var(--page-display, inherit);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink, #23202b);
+}
+
+/* =========================
+   Weekdays and grid
+========================= */
+.dp-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 0.2rem;
+
+  span {
+    padding: 0.25rem 0;
+    text-align: center;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint, rgba(35, 32, 43, 0.44));
+  }
+}
+
+.dp-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.dp-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink-soft, rgba(35, 32, 43, 0.66));
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+
+  &:hover:not(:disabled):not(.dp-cell--selected) {
+    background: var(--paper-tint, #f4f2ee);
+    color: var(--ink, #23202b);
+  }
+
+  &--empty {
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  /* Today is only outlined; the chosen day is the one that fills. */
+  &--today {
+    border-color: var(--accent-hair, rgba(255, 95, 154, 0.45));
+    color: var(--ink, #23202b);
+  }
+
+  &--selected {
+    border-color: transparent;
+    background: var(--ink, #23202b);
+    color: var(--paper, #fbfaf8);
+  }
+
+  &:disabled { cursor: default; }
+}

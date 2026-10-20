@@ -1,0 +1,18 @@
+<div class="sel-wrap" [class.open]="isOpen" [class.open-up]="openUpward && isOpen">
+  <button type="button" class="sel-trigger" (click)="toggle()">
+    <span class="sel-label" [class.sel-placeholder]="!hasValue">{{ displayLabel }}</span>
+    <i class="pi pi-chevron-down sel-arrow" aria-hidden="true"></i>
+  </button>
+
+  @if (isOpen) {
+    <div class="sel-panel" [ngStyle]="panelStyle">
+      <ul class="sel-list" role="listbox">
+        @for (opt of options; track opt.value) {
+          <li role="option" class="sel-item" [class.sel-item--active]="isSelected(opt)" [attr.aria-selected]="isSelected(opt)" (click)="select(opt)">
+            <span>{{ opt.label }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

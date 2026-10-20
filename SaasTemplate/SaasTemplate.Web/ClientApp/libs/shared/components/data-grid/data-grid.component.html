@@ -1,0 +1,93 @@
+@if (rows.length === 0) {
+  <p class="empty">{{ emptyKey | translate }}</p>
+} @else {
+  <!-- A phone has no header row to click, so sorting gets its own control there. -->
+  @if (sortableColumns.length) {
+    <div class="grid-sortbar">
+      <span class="grid-sortbar-label" aria-hidden="true">{{ 'GRID.SORT_BY' | translate }}</span>
+      <select class="input grid-select" [attr.aria-label]="'GRID.SORT_BY' | translate" [ngModel]="sortKey" (ngModelChange)="sortBy($event)">
+        <option [ngValue]="null">{{ 'GRID.DEFAULT_ORDER' | translate }}</option>
+        @for (column of sortableColumns; track column.key) {
+          <option [ngValue]="column.key">{{ column.headerKey | translate }}</option>
+        }
+      </select>
+      <button
+        type="button"
+        class="grid-direction"
+        [disabled]="!sortKey"
+        [attr.aria-label]="(sortDirection === 'asc' ? 'GRID.ASCENDING' : 'GRID.DESCENDING') | translate"
+        [title]="(sortDirection === 'asc' ? 'GRID.ASCENDING' : 'GRID.DESCENDING') | translate"
+        (click)="toggleDirection()">
+        <i [class]="sortDirection === 'asc' ? 'pi pi-sort-amount-up-alt' : 'pi pi-sort-amount-down'" aria-hidden="true"></i>
+      </button>
+    </div>
+  }
+
+  <div class="table-wrap">
+    <table class="table grid-table" [class.is-clickable]="clickable">
+      <thead>
+        <tr>
+          @for (column of columns; track column.key) {
+            <th [class]="cellClass(column)" [attr.aria-sort]="ariaSort(column)">
+              @if (column.sortValue) {
+                <button type="button" class="grid-sort" [class.is-active]="column.key === sortKey" (click)="sortBy(column.key)">
+                  {{ column.headerKey | translate }}
+                  <i [class]="sortIcon(column)" aria-hidden="true"></i>
+                </button>
+              } @else if (column.headerKey) {
+                {{ column.headerKey | translate }}
+              }
+            </th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of pageRows; track trackBy(row)) {
+          <tr (click)="onRowClick(row)">
+            @for (column of columns; track column.key) {
+              <td [class]="cellClass(column)">
+                @if (showMobileLabel(column)) {
+                  <span class="grid-mobile-label">{{ column.headerKey | translate }}</span>
+                }
+                <ng-container *ngTemplateOutlet="templateFor(column.key); context: { $implicit: row }"></ng-container>
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <nav class="grid-pager" [attr.aria-label]="'GRID.PAGES' | translate">
+    <span class="grid-range">{{ 'GRID.RANGE' | translate: { from: rangeFrom, to: rangeTo, total: rows.length } }}</span>
+
+    <label class="grid-size">
+      <span>{{ 'GRID.PER_PAGE' | translate }}</span>
+      <select class="input grid-select" [ngModel]="pageSize" (ngModelChange)="setPageSize($event)">
+        @for (size of pageSizes; track size) {
+          <option [ngValue]="size">{{ size }}</option>
+        }
+      </select>
+    </label>
+
+    @if (pageCount > 1) {
+      <div class="grid-pages">
+        <button type="button" class="grid-page" [disabled]="page === 1" [attr.aria-label]="'GRID.PREVIOUS' | translate" (click)="goTo(page - 1)">
+          <i class="pi pi-angle-left" aria-hidden="true"></i>
+        </button>
+        @for (item of pageItems; track $index) {
+          @if (item === 'gap') {
+            <span class="grid-gap" aria-hidden="true">…</span>
+          } @else {
+            <button type="button" class="grid-page" [class.is-active]="item === page" [attr.aria-current]="item === page ? 'page' : null" (click)="goTo(item)">
+              {{ item }}
+            </button>
+          }
+        }
+        <button type="button" class="grid-page" [disabled]="page === pageCount" [attr.aria-label]="'GRID.NEXT' | translate" (click)="goTo(page + 1)">
+          <i class="pi pi-angle-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    }
+  </nav>
+}

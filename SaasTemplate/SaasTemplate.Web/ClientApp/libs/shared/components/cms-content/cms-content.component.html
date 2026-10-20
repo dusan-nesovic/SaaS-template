@@ -1,0 +1,25 @@
+<div class="page">
+  <div #sentinel class="scroll-sentinel" aria-hidden="true"></div>
+
+  <div #headWrap class="page-head-wrap" [class.is-stuck]="isStuck" [class.has-actions]="hasActions" [style.--actions-offset.px]="actionsOffset">
+    <header class="page-head">
+      <div class="page-head-copy">
+        <div class="page-title-row">
+          <h1>{{ title }}</h1>
+          <ng-content select="[status]"></ng-content>
+        </div>
+        @if (description) {
+          <p class="page-sub">{{ description }}</p>
+        }
+      </div>
+
+      <div #actions class="page-actions">
+        <ng-content select="[btn]"></ng-content>
+      </div>
+    </header>
+  </div>
+
+  <div class="page-body">
+    <ng-content></ng-content>
+  </div>
+</div>

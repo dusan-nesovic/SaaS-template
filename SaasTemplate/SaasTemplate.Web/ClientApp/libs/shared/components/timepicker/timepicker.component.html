@@ -1,0 +1,45 @@
+<div class="tp-wrap" [class.tp-open]="isOpen" [class.open-up]="openUpward && isOpen">
+
+  <!-- Trigger -->
+  <div class="tp-trigger" (click)="toggle()">
+    <i class="pi pi-clock tp-icon"></i>
+    <span class="tp-value" [class.tp-placeholder]="selectedHour === null">
+      {{ displayValue || displayPlaceholder }}
+    </span>
+    <i class="pi pi-chevron-down tp-arrow"></i>
+  </div>
+
+  <!-- Panel -->
+  <div class="tp-panel" *ngIf="isOpen">
+    <div class="tp-cols">
+
+      <!-- Hours -->
+      <ul class="tp-list">
+        <li *ngFor="let h of hours"
+            class="tp-item"
+            [class.tp-item--active]="h === selectedHour"
+            (click)="pickHour(h)">
+          {{ padNum(h) }}
+        </li>
+      </ul>
+
+      <div class="tp-colon">:</div>
+
+      <!-- Minutes -->
+      <ul class="tp-list">
+        <li *ngFor="let m of minutes"
+            class="tp-item"
+            [class.tp-item--active]="m === selectedMinute"
+            (click)="pickMinute(m)">
+          {{ padNum(m) }}
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="tp-footer">
+      <button type="button" class="btn primary" (click)="confirm()">{{ 'OK' | translate }}</button>
+    </div>
+  </div>
+
+</div>

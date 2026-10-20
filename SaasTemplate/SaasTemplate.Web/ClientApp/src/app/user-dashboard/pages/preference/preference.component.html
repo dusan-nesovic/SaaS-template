@@ -1,0 +1,26 @@
+<app-cms-content [title]="'MENU.PREFERENCE' | translate" [description]="'PAGE_SUB.PREFERENCE' | translate">
+  <div class="panel pref-panel">
+    <div class="panel-body">
+      <div class="pref-row">
+        <div class="pref-copy">
+          <span class="pref-label">{{ 'THEME' | translate }}</span>
+          <span class="pref-hint">{{ 'PREFERENCE.THEME_HINT' | translate }}</span>
+        </div>
+
+        <button class="btn pref-control" type="button" (click)="toggleTheme()">
+          <i class="pi" [class.pi-moon]="currentTheme === 'light'" [class.pi-sun]="currentTheme === 'dark'" aria-hidden="true"></i>
+          {{ (currentTheme === 'dark' ? 'THEME_DARK' : 'THEME_LIGHT') | translate }}
+        </button>
+      </div>
+
+      <div class="pref-row">
+        <div class="pref-copy">
+          <span class="pref-label">{{ 'LANGUAGE' | translate }}</span>
+          <span class="pref-hint">{{ 'PREFERENCE.LANGUAGE_HINT' | translate }}</span>
+        </div>
+
+        <app-select class="pref-control" [(ngModel)]="selectedLanguage" [options]="languageOptions" (ngModelChange)="onLanguageChange({ value: $event })"></app-select>
+      </div>
+    </div>
+  </div>
+</app-cms-content>

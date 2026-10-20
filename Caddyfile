@@ -1,0 +1,5 @@
+# Site address comes from CLIENT_URL in the env file, e.g. https://example.com
+# Caddy obtains and renews the Let's Encrypt certificate for it automatically.
+{$CLIENT_URL} {
+	reverse_proxy web:4200
+}

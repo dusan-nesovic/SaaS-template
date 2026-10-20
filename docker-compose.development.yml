@@ -1,0 +1,52 @@
+# Development overrides. Layered on top of docker-compose.yml by ./docker.ps1 dev
+services:
+  db:
+    # Published so you can attach pgAdmin / DataGrip from the host, and so dotnet ef
+    # migrations can reach the database over localhost.
+    # Deliberately absent in production.
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    restart: "no"
+
+  api:
+    build:
+      target: dev
+    environment:
+      # Set WATCH=0 in .env.development to stop the file watcher restarting the process,
+      # so a Visual Studio debug session stays attached across edits.
+      WATCH: ${WATCH:-1}
+    volumes:
+      # dotnet watch rebuilds on host edits; Reinforced.Typings writes the regenerated
+      # ClientApp/libs/_generated back through the same mount.
+      - ./SaasTemplate:/src
+      # ArtifactsPath=/artifacts keeps the Linux bin/obj out of the mounted Windows tree
+      - dotnet_artifacts:/artifacts
+      - nuget_packages:/root/.nuget/packages
+    restart: "no"
+
+  web:
+    build:
+      target: dev
+    volumes:
+      - ./SaasTemplate/SaasTemplate.Web/ClientApp:/client
+      - client_node_modules:/client/node_modules
+    restart: "no"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    restart: "no"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  pgadmin_data:
+  dotnet_artifacts:
+  nuget_packages:
+  client_node_modules:

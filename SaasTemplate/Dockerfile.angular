@@ -1,0 +1,34 @@
+# syntax=docker/dockerfile:1.7
+# Multi-stage build for Angular 18 client app.
+# Build context must be the `SaasTemplate/` folder (parent of this Dockerfile).
+
+# ---------- Stage 1: build Angular client ----------
+FROM node:20-alpine AS client-build
+
+# Which npm script to run. `build:prod` bakes in environment.prod.ts (Constants.API_URL_PROD),
+# `build` bakes in environment.ts (Constants.API_URL). Set per environment from the compose file.
+ARG NPM_BUILD_SCRIPT=build:prod
+
+WORKDIR /client
+COPY SaasTemplate.Web/ClientApp/package*.json ./
+RUN npm ci
+COPY SaasTemplate.Web/ClientApp/ ./
+RUN npm run "$NPM_BUILD_SCRIPT"
+
+# ---------- Stage 2: development image (ng serve with hot reload) ----------
+# node_modules is installed here and kept in a named volume, because the compose bind mount
+# of ClientApp would otherwise hide it.
+FROM node:20-alpine AS dev
+WORKDIR /client
+COPY SaasTemplate.Web/ClientApp/package*.json ./
+RUN npm ci
+EXPOSE 4200
+# --poll: bind mounts on Windows and macOS do not deliver inotify events to the container.
+CMD ["npx", "ng", "serve", "ClientApp", "--host", "0.0.0.0", "--port", "4200", "--poll", "2000"]
+
+# ---------- Stage 3: serve with nginx ----------
+FROM nginx:alpine
+COPY --from=client-build /client/dist/client-app/browser /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
+EXPOSE 4200
+CMD ["nginx", "-g", "daemon off;"]

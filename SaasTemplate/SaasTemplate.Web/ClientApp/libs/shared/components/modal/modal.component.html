@@ -1,0 +1,16 @@
+@if (visible) {
+  <div class="modal-backdrop" (click)="onBackdropClick($event)">
+    <div class="modal" [style.width]="width" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      @if (title) {
+        <div class="modal-header">
+          <h3>{{ title }}</h3>
+          <button type="button" class="close-btn" [attr.aria-label]="'CLOSE' | translate" (click)="close()">&times;</button>
+        </div>
+      }
+
+      <div class="modal-body">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+}

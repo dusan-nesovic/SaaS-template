@@ -1,0 +1,49 @@
+<!-- Routed dialog: closing it navigates back to the list, so the modal's own
+     backdrop click and Escape both go through `closeEdit`. -->
+<app-modal [visible]="true" [title]="'EDIT_USER' | translate" width="34rem" (closed)="closeEdit()">
+  @if (selectedUser) {
+    <dl class="user-info">
+      <dt>{{ 'NAME' | translate }}</dt>
+      <dd>{{ selectedUser.firstName }} {{ selectedUser.lastName }}</dd>
+      <dt>{{ 'DASHBOARD.COL_EMAIL' | translate }}</dt>
+      <dd class="email" [title]="selectedUser.userName">{{ selectedUser.userName }}</dd>
+    </dl>
+
+    <p class="roles-lead">{{ 'ROLES_HINT' | translate }}</p>
+
+    <div class="role-columns">
+      <section class="role-panel">
+        <h3>{{ 'AVAILABLE' | translate }}</h3>
+        <ul>
+          @for (item of list1; track item; let i = $index) {
+            <li><button type="button" (click)="onAddUserRoleType(i)">{{ item | enumName: userRoles }}<i class="pi pi-arrow-right" aria-hidden="true"></i></button></li>
+          } @empty {
+            <li class="role-empty">{{ 'ROLES_NONE_LEFT' | translate }}</li>
+          }
+        </ul>
+      </section>
+
+      <section class="role-panel">
+        <h3>{{ 'ASSIGNED' | translate }}</h3>
+        <ul>
+          @for (item of list2; track item; let i = $index) {
+            <li><button type="button" (click)="onRemovUserRoleType(i)"><i class="pi pi-arrow-left" aria-hidden="true"></i>{{ item | enumName: userRoles }}</button></li>
+          } @empty {
+            <li class="role-empty">{{ 'ROLES_NONE_ASSIGNED' | translate }}</li>
+          }
+        </ul>
+      </section>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn secondary" type="button" (click)="closeEdit()">{{ 'CANCEL' | translate }}</button>
+      <button class="btn primary" type="button" (click)="onUpdateUserRoles()">{{ 'SAVE' | translate }}</button>
+    </div>
+  } @else if (userRetrieved) {
+    <p class="empty">{{ 'USER_NOT_FOUND' | translate }}</p>
+
+    <div class="modal-actions">
+      <button class="btn secondary" type="button" (click)="closeEdit()">{{ 'CANCEL' | translate }}</button>
+    </div>
+  }
+</app-modal>

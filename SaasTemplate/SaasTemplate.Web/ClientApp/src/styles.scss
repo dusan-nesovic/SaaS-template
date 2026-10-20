@@ -1,0 +1,473 @@
+/* Tools (mixins, breakpoints) plus the global emitting partials. These three are
+   imported here and nowhere else - see the note in `_shared.scss`. */
+@import "shared";
+@import "fonts";
+@import "spacing";
+@import "theme";
+@import "forms";
+
+/* You can add global styles to this file, and also import other style files */
+body,
+html { 
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  // font-family: var(--font-ui);
+  overflow: auto; /* Sprečava scroll cele stranice */
+}
+* {
+  box-sizing: border-box;
+}
+
+.p-toast-message {
+  font-size: var(--font-base);
+}
+
+.p-toast {
+  z-index: 11005 !important;
+
+  /* desktop default */
+  width: 22rem;
+  max-width: 22rem;
+}
+
+/* ==============================
+    UI Components
+============================== */
+.btn {
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  font-weight: 900;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, border-color .15s ease,
+              transform .12s ease, box-shadow .12s ease
+}
+
+.btn.primary {
+  border-color: rgba(255, 95, 154, .30);
+  background: rgba(255, 95, 154, .08);
+  color: var(--accent)
+}
+
+.btn.primary:hover {
+  background: rgba(255, 95, 154, .88);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(255, 95, 154, .22)
+}
+
+.btn.ok {
+  border-color: rgba(23, 167, 132, .30);
+  background: rgba(23, 167, 132, .08);
+  color: var(--ok)
+}
+
+.btn.ok:hover {
+  background: rgba(23, 167, 132, .88);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(23, 167, 132, .20)
+}
+
+.btn.danger {
+  border-color: rgba(232, 68, 90, .24);
+  background: rgba(232, 68, 90, .10);
+  color: var(--danger)
+}
+
+.btn.danger:hover {
+  background: rgba(232, 68, 90, .88);
+  color: #fff
+}
+
+.btn.gold {
+  border-color: rgba(242, 183, 107, .30);
+  background: rgba(242, 183, 107, .08);
+  color: var(--gold)
+}
+
+.btn.gold:hover {
+  background: rgba(242, 183, 107, .88);
+  color: #fff
+}
+
+.btn.secondary {
+  border-color: var(--line);
+  background: var(--neutral);
+  color: var(--muted)
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .08)
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none
+}
+
+.btn-icon {
+  padding: 8px 10px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center
+}
+
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 95, 154, .04);
+  border-top-left-radius: calc(var(--radius) - 1px);
+  border-top-right-radius: calc(var(--radius) - 1px);
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 14px
+}
+
+.panel-body {
+  padding: 14px
+}
+
+.input,
+.select,
+.textarea {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--input-bg);
+  color: var(--text);
+  outline: none;
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color .15s ease, box-shadow .15s ease;
+
+  &::placeholder {
+    color: var(--muted);
+    opacity: 0.7;
+  }
+
+  &:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 95, 154, .10);
+  }
+}
+
+.input,
+.textarea {
+  width: 100%;
+}
+
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 2.4rem;
+  min-width: 9rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231a1630' stroke-opacity='.45' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px 8px;
+}
+
+[data-theme='dark'] .select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23f3f4ff' stroke-opacity='.55' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.select option {
+  background: var(--input-bg, #fff);
+  color: var(--text);
+  padding: 8px;
+}
+
+[data-theme='dark'] .select option {
+  background: #1a1d35;
+  color: #f3f4ff;
+}
+
+input[type="date"],
+input[type="time"] {
+  color-scheme: light;
+
+  &::-webkit-calendar-picker-indicator {
+    opacity: 0.45;
+    cursor: pointer;
+  }
+}
+
+[data-theme='dark'] input[type="date"],
+[data-theme='dark'] input[type="time"] {
+  color-scheme: dark;
+
+  &::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.55;
+  }
+}
+
+.textarea {
+  min-height: 240px;
+  resize: vertical;
+  line-height: 1.55
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid var(--line);
+  background: rgba(26, 22, 48, .02);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+[data-theme='dark'] .tag {
+  background: rgba(243, 244, 255, .06)
+}
+
+.tag.ok {
+  border-color: rgba(23, 167, 132, .22);
+  color: rgba(23, 167, 132, .95);
+  background: rgba(23, 167, 132, .08)
+}
+
+.tag.rose {
+  border-color: rgba(255, 95, 154, .22);
+  color: rgba(255, 95, 154, .98);
+  background: rgba(255, 95, 154, .08)
+}
+
+.tag.gold {
+  border-color: rgba(242, 183, 107, .22);
+  color: rgba(242, 183, 107, .98);
+  background: rgba(242, 183, 107, .10)
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 14px
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px
+}
+
+.card {
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: transparent
+}
+
+.card .k {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--serif)
+}
+
+.card .v {
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 900
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: rgba(26, 22, 48, .02)
+}
+
+[data-theme='dark'] .badge {
+  background: rgba(243, 244, 255, .06)
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px
+}
+
+.table th {
+  text-align: left;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 900;
+  padding: 0 8px
+}
+
+.table td {
+  padding: 12px 8px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  font-size: 13px
+}
+
+.table tr td:first-child {
+  border-left: 1px solid var(--line);
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px
+}
+
+.table tr td:last-child {
+  border-right: 1px solid var(--line);
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px
+}
+
+.preview {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--panel);
+  box-shadow: var(--shadow)
+}
+
+.preview-header {
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: transparent
+}
+
+.poster {
+  height: 240px;
+  background: radial-gradient(240px 140px at 30% 30%, rgba(255, 255, 255, .75), transparent 60%), linear-gradient(135deg, rgba(255, 95, 154, .12), rgba(140, 107, 255, .10))
+}
+
+[data-theme='dark'] .poster {
+  background: radial-gradient(240px 140px at 30% 30%, rgba(255, 255, 255, .10), transparent 60%), linear-gradient(135deg, rgba(255, 95, 154, .18), rgba(140, 107, 255, .16))
+}
+
+.preview-body {
+  padding: 12px
+}
+
+.preview-body h3 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 20px
+}
+
+.preview-body p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35
+}
+
+/* =========================
+   Print
+========================= */
+@media print {
+  @page {
+    margin: 0;
+    size: A4;
+  }
+
+  html, body, app-root {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+  }
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@include tablet {
+  ::ng-deep .welcome-card .p-card-body {
+    padding: 1.35rem;
+  }
+
+  .welcome-inner {
+    min-height: 200px;
+  }
+
+  .welcome-copy h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@include mobile {
+  ::ng-deep .welcome-card .p-card-body {
+    padding: 1.1rem;
+  }
+
+  .welcome-inner {
+    min-height: 180px;
+    gap: 0.85rem;
+  }
+
+  .welcome-copy h2 {
+    font-size: 1.35rem;
+  }
+
+  /* dugme ostaje auto width */
+  .btn {
+    padding: 0.65rem 0.95rem;
+  }
+}
+
+@include down(480px) {
+  .welcome-copy h2 {
+    font-size: 1.22rem;
+  }
+}
+
+/* Mobile: skoro full width */
+@include mobile {
+  .p-toast {
+    width: calc(100vw - 2rem) !important;
+    max-width: calc(100vw - 2rem) !important;
+  }
+}
+
+/* Small phones: još malo uže margine */
+@include down(480px) {
+  .p-toast {
+    width: calc(100vw - 1.5rem) !important;
+    max-width: calc(100vw - 1.5rem) !important;
+  }
+}
+
+/* Last on purpose: the studio rules below restyle the same class names as the
+   generic UI components above (`.btn`, `.panel`, `.table`, `.input`), and at
+   equal specificity the later rule has to be the one that wins. Outside
+   `.studio` - the public pages - the rules above still apply untouched. */
+@import "studio";

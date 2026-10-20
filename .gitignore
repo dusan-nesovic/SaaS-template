@@ -1,0 +1,50 @@
+# Ignore build artifacts
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.user
+*.suo
+*.cache
+*.log
+*.vscode
+*.vs
+_ReSharper*
+
+# Ignore node_modules directory for Angular
+node_modules/
+
+# Ignore npm's debug log file
+npm-debug.log*
+
+# Ignore Angular build artifacts (e.g., dist/ directory)
+dist/
+
+# Ignore Visual Studio files
+.vscode/
+.idea/
+*.suo
+*.sln.docstates
+
+# Ignore user-specific files
+*.suo
+*.user
+*.userprefs
+*.sln.docstates
+
+# Ignore compiled TypeScript files
+*.js
+*.js.map
+
+# Claude Code - rules and skills are shared, local settings are not
+.claude/settings.local.json
+.claude/worktrees/
+
+# Secrets - real values live in .env.<environment> files or environment variables,
+# never in the repo. No env file is tracked.
+.env
+.env.*
+
+# Runtime logs written by Serilog
+Logs/

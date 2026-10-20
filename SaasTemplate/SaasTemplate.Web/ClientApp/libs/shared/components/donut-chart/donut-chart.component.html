@@ -1,0 +1,52 @@
+@if (total > 0) {
+  <div class="donut" [class.has-focus]="hovered">
+    <div class="donut-figure">
+      <svg viewBox="0 0 120 120" role="img" [attr.aria-label]="total + ' ' + caption">
+        <g transform="rotate(-90 60 60)">
+          @for (arc of arcs; track arc.key) {
+            <circle
+              class="donut-arc"
+              [class.is-dimmed]="hovered && hovered.key !== arc.key"
+              cx="60"
+              cy="60"
+              [attr.r]="radius"
+              [style.stroke]="'var(--series-' + arc.slot + ')'"
+              [attr.stroke-dasharray]="arc.dashArray"
+              [attr.stroke-dashoffset]="arc.dashOffset"
+              (mouseenter)="setHovered(arc)"
+              (mouseleave)="setHovered(null)">
+              <title>{{ arc.labelKey | translate }}: {{ arc.value }} ({{ arc.percent }}%)</title>
+            </circle>
+          }
+        </g>
+      </svg>
+
+      <!-- The middle shows the total, or the slice under the pointer. -->
+      <div class="donut-center" aria-hidden="true">
+        @if (hovered; as arc) {
+          <span class="donut-value">{{ arc.percent }}%</span>
+          <span class="donut-caption">{{ arc.labelKey | translate }}</span>
+        } @else {
+          <span class="donut-value">{{ total }}</span>
+          <span class="donut-caption">{{ caption }}</span>
+        }
+      </div>
+    </div>
+
+    <!-- The legend names every slice with its number, so nothing depends on color alone. -->
+    <ul class="donut-legend">
+      @for (arc of arcs; track arc.key) {
+        <li
+          class="donut-legend-row"
+          [class.is-dimmed]="hovered && hovered.key !== arc.key"
+          (mouseenter)="setHovered(arc)"
+          (mouseleave)="setHovered(null)">
+          <span class="donut-swatch" [style.background]="'var(--series-' + arc.slot + ')'"></span>
+          <span class="donut-label">{{ arc.labelKey | translate }}</span>
+          <span class="donut-count">{{ arc.value }}</span>
+          <span class="donut-percent">{{ arc.percent }}%</span>
+        </li>
+      }
+    </ul>
+  </div>
+}

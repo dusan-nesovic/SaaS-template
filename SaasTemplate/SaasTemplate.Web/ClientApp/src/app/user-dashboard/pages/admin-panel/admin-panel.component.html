@@ -1,0 +1,9 @@
+<app-cms-content [title]="'MENU.ADMIN_PANEL' | translate" [description]="'PAGE_SUB.ADMIN' | translate">
+  <ng-container btn>
+    <nav class="mode-toggle" [attr.aria-label]="'MENU.ADMIN_PANEL' | translate">
+      <a class="mode-btn" routerLink="users" routerLinkActive="is-active" ariaCurrentWhenActive="page">{{ 'ADMIN.TAB_USERS' | translate }}</a>
+    </nav>
+  </ng-container>
+
+  <router-outlet></router-outlet>
+</app-cms-content>

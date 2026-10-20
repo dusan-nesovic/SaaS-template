@@ -1,0 +1,65 @@
+<app-form-template [title]="'AUTH.REGISTER_TITLE' | translate" [subtitle]="'AUTH.REGISTER_SUBTITLE' | translate" [formGroup]="form" (formSubmit)="onRegister()">
+  <div class="field">
+    <label for="register-first-name">{{ 'AUTH.FIRST_NAME' | translate }}</label>
+    <input id="register-first-name" formControlName="firstName" type="text" class="form-control" [placeholder]="'AUTH.FIRST_NAME_PLACEHOLDER' | translate" autocomplete="given-name" />
+    @if (form.get('firstName')?.touched) {
+      @if (form.get('firstName')?.hasError('required')) {
+        <p class="field-error">{{ 'AUTH.FIRST_NAME_REQUIRED' | translate }}</p>
+      } @else if (form.get('firstName')?.hasError('pattern')) {
+        <p class="field-error">{{ 'AUTH.FIRST_NAME_INVALID' | translate }}</p>
+      }
+    }
+  </div>
+
+  <div class="field">
+    <label for="register-last-name">{{ 'AUTH.LAST_NAME' | translate }}</label>
+    <input id="register-last-name" formControlName="lastName" type="text" class="form-control" [placeholder]="'AUTH.LAST_NAME_PLACEHOLDER' | translate" autocomplete="family-name" />
+    @if (form.get('lastName')?.touched) {
+      @if (form.get('lastName')?.hasError('required')) {
+        <p class="field-error">{{ 'AUTH.LAST_NAME_REQUIRED' | translate }}</p>
+      } @else if (form.get('lastName')?.hasError('pattern')) {
+        <p class="field-error">{{ 'AUTH.LAST_NAME_INVALID' | translate }}</p>
+      }
+    }
+  </div>
+
+  <div class="field">
+    <label for="register-email">{{ 'AUTH.EMAIL' | translate }}</label>
+    <input id="register-email" formControlName="email" type="email" class="form-control" [placeholder]="'AUTH.EMAIL_PLACEHOLDER' | translate" autocomplete="email" />
+    @if (form.get('email')?.touched) {
+      @if (form.get('email')?.hasError('required')) {
+        <p class="field-error">{{ 'AUTH.EMAIL_REQUIRED' | translate }}</p>
+      } @else if (form.get('email')?.hasError('pattern')) {
+        <p class="field-error">{{ 'AUTH.EMAIL_INVALID' | translate }}</p>
+      }
+    }
+  </div>
+
+  <div class="field">
+    <label for="register-password">{{ 'AUTH.PASSWORD' | translate }}</label>
+    <input id="register-password" formControlName="password" type="password" class="form-control" [placeholder]="'AUTH.NEW_PASSWORD_PLACEHOLDER' | translate" autocomplete="new-password" />
+    @if (form.get('password')?.touched) {
+      @if (form.get('password')?.hasError('required')) {
+        <p class="field-error">{{ 'AUTH.PASSWORD_REQUIRED' | translate }}</p>
+      } @else if (form.get('password')?.hasError('pattern')) {
+        <p class="field-error">{{ 'AUTH.PASSWORD_INVALID' | translate }}</p>
+      }
+    }
+  </div>
+
+  <div class="field">
+    <label for="register-confirm-password">{{ 'AUTH.REPEAT_PASSWORD' | translate }}</label>
+    <input id="register-confirm-password" formControlName="confirmPassword" type="password" class="form-control" [placeholder]="'AUTH.REPEAT_PASSWORD_PLACEHOLDER' | translate" autocomplete="new-password" />
+    @if (form.get('confirmPassword')?.hasError('required') && form.get('confirmPassword')?.touched) {
+      <p class="field-error">{{ 'AUTH.REPEAT_PASSWORD_REQUIRED' | translate }}</p>
+    }
+  </div>
+
+  <ng-container btn>
+    <button type="submit" [disabled]="!form.valid">{{ 'AUTH.CREATE_ACCOUNT' | translate }}</button>
+  </ng-container>
+
+  <ng-container return>
+    <p class="form-return">{{ 'AUTH.HAVE_ACCOUNT' | translate }} <a routerLink="/app/login">{{ 'AUTH.SIGN_IN' | translate }}</a></p>
+  </ng-container>
+</app-form-template>

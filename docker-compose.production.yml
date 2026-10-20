@@ -1,0 +1,48 @@
+# Production overrides. Layered on top of docker-compose.yml by ./docker.ps1 prod
+# The database port is intentionally NOT published - only the api container reaches it
+# over the compose network.
+services:
+  db:
+    restart: unless-stopped
+
+  api:
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  web:
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  # Terminates TLS on 80/443 and forwards to the web container. The certificate is
+  # issued and renewed by Let's Encrypt, so caddy_data must survive a redeploy.
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      CLIENT_URL: ${CORS_ALLOWED_ORIGIN:?missing in env file}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+volumes:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,48 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "outDir": "./dist/out-tsc",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": [
+      "ES2022",
+      "dom"
+    ],
+    "paths": {
+      "@Workspace/services":     ["./libs/services/index.ts"],
+      "@Workspace/common":       ["./libs/common/index.ts"],
+      "@Workspace/interfaces":   ["./libs/interfaces/index.ts"],
+      "@Workspace/models":       ["./libs/models/index.ts"],
+      "@Workspace/pipes":        ["./libs/pipes/index.ts"],
+      "@Workspace/directives":   ["./libs/directives/index.ts"],
+      "@Workspace/interceptors": ["./libs/interceptors/index.ts"],
+      "@Workspace/guards":       ["./libs/guards/index.ts"],
+      "@Workspace/shared":       ["./libs/shared/index.ts"],
+      "@Workspace/_generated/*": ["./libs/_generated/*"],
+
+      "*": ["./src/*", "./*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}

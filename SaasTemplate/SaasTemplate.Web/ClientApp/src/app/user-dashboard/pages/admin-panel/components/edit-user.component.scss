@@ -1,0 +1,129 @@
+@import "shared";
+
+/* The dialog frame comes from `app-modal`, the buttons and hairlines from
+   `.studio` (src/scss/_studio.scss). Left here: the two role columns. */
+
+.user-info {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.2rem 1rem;
+  margin: 0 0 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--hair-soft);
+  font-size: 0.85rem;
+
+  dt {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    align-self: center;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+
+  /* An address is never broken over lines; one too long for the dialog ends
+     in an ellipsis and the full value is in the tooltip. */
+  dd.email {
+    overflow: hidden;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.roles-lead {
+  margin: 0 0 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--ink-soft);
+}
+
+.role-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.role-panel {
+  border: 1px solid var(--hair-soft);
+  border-radius: 14px;
+  overflow: hidden;
+
+  h3 {
+    margin: 0;
+    padding: 0.6rem 0.85rem;
+    border-bottom: 1px solid var(--hair-soft);
+    font-family: inherit;
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  ul {
+    margin: 0;
+    padding: 0.3rem;
+    min-height: 8rem;
+    list-style: none;
+  }
+}
+
+/* A row is the control: clicking it sends the role to the other column. */
+.role-panel button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease;
+
+  i {
+    flex: none;
+    font-size: 0.6rem;
+    color: var(--ink-faint);
+    transition: color 0.12s ease;
+  }
+
+  &:hover {
+    background: var(--paper-tint);
+    border-color: var(--hair-soft);
+
+    i { color: var(--accent-ink); }
+  }
+}
+
+.role-empty {
+  padding: 0.45rem 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: var(--ink-faint);
+}
+
+@include mobile {
+  /* Label above value, so the value gets the whole width of the dialog. */
+  .user-info {
+    grid-template-columns: minmax(0, 1fr);
+
+    dd + dt { margin-top: 0.5rem; }
+  }
+
+  .role-columns { grid-template-columns: 1fr; }
+
+  .role-panel ul { min-height: 0; }
+}

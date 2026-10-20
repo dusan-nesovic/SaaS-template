@@ -1,0 +1,47 @@
+<div class="dp-wrap" [class.dp-open]="isOpen" [class.open-up]="openUpward && isOpen">
+
+  <!-- Trigger -->
+  <div class="dp-trigger" (click)="toggle()">
+    <i class="pi pi-calendar dp-icon"></i>
+    <span class="dp-value" [class.dp-placeholder]="!value">
+      {{ value ? displayValue : displayPlaceholder }}
+    </span>
+    <i class="pi pi-chevron-down dp-arrow"></i>
+  </div>
+
+  <!-- Calendar panel -->
+  <div class="dp-panel" *ngIf="isOpen">
+
+    <!-- Month navigation -->
+    <div class="dp-nav">
+      <button type="button" class="dp-nav-btn" (click)="prevMonth()">
+        <i class="pi pi-chevron-left"></i>
+      </button>
+      <span class="dp-month-label">{{ monthLabel }}</span>
+      <button type="button" class="dp-nav-btn" (click)="nextMonth()">
+        <i class="pi pi-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Weekday headers -->
+    <div class="dp-weekdays">
+      <span *ngFor="let d of weekdays">{{ d }}</span>
+    </div>
+
+    <!-- Day grid -->
+    <div class="dp-grid">
+      <button
+        *ngFor="let day of calendarDays"
+        type="button"
+        class="dp-cell"
+        [class.dp-cell--empty]="!day"
+        [class.dp-cell--selected]="isSelected(day)"
+        [class.dp-cell--today]="isToday(day)"
+        [disabled]="!day"
+        (click)="selectDay(day)">
+        {{ day || '' }}
+      </button>
+    </div>
+
+  </div>
+</div>

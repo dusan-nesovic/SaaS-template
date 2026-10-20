@@ -1,0 +1,15 @@
+/* ==============================
+   Shared SCSS
+
+   Tools only - mixins and breakpoint variables. Nothing here
+   emits CSS, so a component stylesheet can import it without
+   paying for it.
+
+   The partials that DO emit CSS (fonts, spacing, theme) are
+   global and belong in `styles.scss` alone: importing them
+   into a component would stamp the @font-face rules and the
+   whole set of custom properties into every component's
+   stylesheet again.
+============================== */
+
+@forward "mixins";

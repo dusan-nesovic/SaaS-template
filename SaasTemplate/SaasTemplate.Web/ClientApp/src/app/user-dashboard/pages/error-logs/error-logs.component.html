@@ -1,0 +1,50 @@
+<app-cms-content [title]="'MENU.SERILOG' | translate" [description]="'PAGE_SUB.LOGS' | translate">
+  <div class="panel">
+    <div class="panel-body">
+      @if (!errors?.length) {
+        <p class="empty">{{ 'NO_ERRORS' | translate }}</p>
+      } @else {
+        <ul class="log-list">
+          @for (error of errors; track $index) {
+            <li class="log" [class.is-open]="expandedErrorIndex === $index">
+              <button type="button" class="log-summary" [attr.aria-expanded]="expandedErrorIndex === $index" (click)="toggleDetails($index)">
+                <i class="pi pi-chevron-right log-chevron" aria-hidden="true"></i>
+                <span class="log-source">{{ error.source }}</span>
+                <span class="log-message">{{ error.message }}</span>
+                <span class="log-time">{{ error.time | timeAgo }}</span>
+              </button>
+
+              @if (expandedErrorIndex === $index) {
+                <dl class="log-detail">
+                  <dt>{{ 'TIME' | translate }}</dt>
+                  <dd>{{ error.time | date: 'MMM d, y, h:mm a' }}</dd>
+
+                  <dt>{{ 'MESSAGE' | translate }}</dt>
+                  <dd>{{ error.message }}</dd>
+
+                  <dt>{{ 'USER' | translate }}</dt>
+                  <dd>{{ error.email }}</dd>
+
+                  <dt>{{ 'SOURCE' | translate }}</dt>
+                  <dd>{{ error.source }}</dd>
+
+                  <dt>{{ 'STACK_TRACE' | translate }}</dt>
+                  <dd><pre class="log-trace">{{ error.stackTrace }}</pre></dd>
+
+                  @if (error.innerException?.length) {
+                    <dt>{{ 'INNER_EXCEPTION' | translate }}</dt>
+                    <dd>
+                      @for (inner of error.innerException; track $index) {
+                        <pre class="log-trace">{{ inner }}</pre>
+                      }
+                    </dd>
+                  }
+                </dl>
+              }
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+</app-cms-content>

@@ -1,0 +1,98 @@
+@import "shared";
+
+/* Tokens come from `.studio` (src/scss/_studio.scss); the fallbacks keep the
+   dialog readable anywhere else. */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  /* Without an explicit track the column grows to the dialog's own width
+     (e.g. 34rem), so `max-width: 100%` never kicks in and the right edge runs
+     off a phone screen. */
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  padding: 1.25rem;
+  background: rgba(20, 16, 32, 0.38);
+  backdrop-filter: blur(2px);
+  animation: modal-fade 0.15s ease;
+}
+
+.modal {
+  box-sizing: border-box;
+  max-width: 100%;
+  max-height: calc(100vh - 2.5rem);
+  overflow-y: auto;
+  border: 1px solid var(--hair-soft, rgba(35, 32, 43, 0.07));
+  border-radius: 20px;
+  background: var(--paper-raised, #ffffff);
+  color: var(--ink, #23202b);
+  box-shadow: var(--lift-strong, 0 20px 48px rgba(20, 16, 32, 0.1));
+  animation: modal-rise 0.16s ease;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem 1rem;
+
+  h3 {
+    margin: 0;
+    font-family: var(--page-display, inherit);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+}
+
+.modal-body {
+  padding: 0 1.5rem 1.5rem;
+}
+
+.close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-faint, rgba(35, 32, 43, 0.44));
+  font-family: inherit;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    color: var(--ink, #23202b);
+    border-color: var(--hair, rgba(35, 32, 43, 0.13));
+  }
+}
+
+@keyframes modal-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@include mobile {
+  .modal-header { padding: 1rem 1.15rem 0.85rem; }
+
+  .modal-body { padding: 0 1.15rem 1.15rem; }
+}

@@ -1,0 +1,39 @@
+/* ==============================
+         Light (default)
+============================== */
+
+$app-bg: #ffffff;
+$app-panel: #ffffff;
+$app-text: #1a1630;
+$app-muted: rgba(26, 22, 48, .62);
+$app-line: rgba(26, 22, 48, .14);
+$app-accent: #ff5f9a;
+$app-accent2: #8c6bff;
+$app-gold: #f2b76b;
+$app-ok: #17a784;
+$app-radius: 18px;
+$app-shadow: 0 4px 14px rgba(15, 12, 40, .06);
+$app-font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+$app-serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+$app-menu-bg: rgba(255, 95, 154, .10);
+$app-menu-border: rgba(255, 95, 154, .18);
+$app-menu-hover: rgba(26, 22, 48, .03);
+
+/* ==============================
+               Dark
+============================== */
+$app-dark-bg: #0f1020;
+$app-dark-panel: #14162b;
+$app-dark-text: #f3f4ff;
+$app-dark-muted: rgba(243, 244, 255, .62);
+$app-dark-line: rgba(243, 244, 255, .14);
+$app-dark-shadow: 0 4px 18px rgba(0, 0, 0, .28);
+$app-dark-menu-hover: rgba(243, 244, 255, .04);
+
+/* ==============================
+   Semantic colors
+============================== */
+$app-danger:       #e8445a;
+$app-danger-dark:  #ff6b80;
+$app-neutral:      rgba(26, 22, 48, .07);
+$app-neutral-dark: rgba(243, 244, 255, .08);

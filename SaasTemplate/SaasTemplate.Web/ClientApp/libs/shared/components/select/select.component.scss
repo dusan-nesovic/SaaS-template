@@ -1,0 +1,141 @@
+@import "shared";
+
+/* The tokens come from `.studio` (src/scss/_studio.scss); the fallbacks keep
+   the control usable if it is ever dropped somewhere else. */
+:host {
+  display: block;
+}
+
+.sel-wrap {
+  position: relative;
+  width: 100%;
+}
+
+/* =========================
+   Trigger
+========================= */
+.sel-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  width: 100%;
+  height: 32px;
+  padding: 0 0.65rem;
+  border: 1px solid var(--hair, rgba(35, 32, 43, 0.13));
+  border-radius: 10px;
+  background: var(--field-bg, #fdfcfb);
+  color: var(--ink, #23202b);
+  font-family: inherit;
+  font-size: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+
+  &:hover { border-color: var(--ink-faint, rgba(35, 32, 43, 0.44)); }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-hair, rgba(255, 95, 154, 0.45));
+    outline-offset: 2px;
+  }
+}
+
+.sel-wrap.open .sel-trigger {
+  border-color: var(--ink-faint, rgba(35, 32, 43, 0.44));
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.sel-wrap.open.open-up .sel-trigger {
+  border-radius: 0 0 10px 10px;
+}
+
+.sel-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sel-placeholder {
+  color: var(--ink-faint, rgba(35, 32, 43, 0.44));
+  font-weight: 300;
+}
+
+.sel-arrow {
+  flex: none;
+  font-size: 0.5rem;
+  color: var(--ink-faint, rgba(35, 32, 43, 0.44));
+  transition: transform 0.15s ease;
+}
+
+.sel-wrap.open .sel-arrow { transform: rotate(180deg); }
+
+/* =========================================================
+   Panel
+
+   `position` and the coordinates are set from the component, in viewport
+   units, so the list escapes any scrolling ancestor - a table wrapper, the
+   page column - instead of being clipped by it. The z-index only has to beat
+   the sticky page header.
+========================================================= */
+.sel-panel {
+  z-index: 1200;
+  border: 1px solid var(--ink-faint, rgba(35, 32, 43, 0.44));
+  border-top-color: var(--hair-soft, rgba(35, 32, 43, 0.07));
+  border-radius: 0 0 10px 10px;
+  background: var(--paper-raised, #ffffff);
+  box-shadow: var(--lift-strong, 0 12px 32px rgba(20, 16, 32, 0.12));
+  overflow: hidden;
+}
+
+.sel-wrap.open-up .sel-panel {
+  border-radius: 10px 10px 0 0;
+  border-top-color: var(--ink-faint, rgba(35, 32, 43, 0.44));
+  border-bottom-color: var(--hair-soft, rgba(35, 32, 43, 0.07));
+}
+
+/* =========================
+   List
+========================= */
+.sel-list {
+  margin: 0;
+  padding: 0.25rem 0;
+  list-style: none;
+  /* The component caps the panel to the room actually available; this is the
+     ceiling it aims for. */
+  max-height: 14rem;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--hair, rgba(35, 32, 43, 0.13));
+    border-radius: 4px;
+  }
+}
+
+.sel-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  color: var(--ink-soft, rgba(35, 32, 43, 0.66));
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+
+  &:hover {
+    background: var(--paper-tint, #f4f2ee);
+    color: var(--ink, #23202b);
+  }
+
+  /* The chosen row is named by weight and a rose hairline, not a fill. */
+  &--active {
+    color: var(--ink, #23202b);
+    font-weight: 500;
+    box-shadow: inset 2px 0 0 var(--accent-hair, rgba(255, 95, 154, 0.45));
+  }
+}

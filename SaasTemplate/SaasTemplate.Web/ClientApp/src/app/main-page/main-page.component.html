@@ -1,0 +1,152 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" routerLink="/">
+      <span class="brand-mark" aria-hidden="true">{{ appName.charAt(0) }}</span>
+      <span class="brand-name">{{ appName }}</span>
+    </a>
+
+    <nav class="nav" [attr.aria-label]="'MENU.LABEL' | translate">
+      <button type="button" (click)="scrollTo('how')">{{ 'MAIN_PAGE.NAV.HOW_IT_WORKS' | translate }}</button>
+      <button type="button" (click)="scrollTo('features')">{{ 'MAIN_PAGE.NAV.FEATURES' | translate }}</button>
+    </nav>
+
+    <div class="header-actions">
+      <select class="lang-select" (change)="onLanguageChange($event)" [attr.aria-label]="'LANGUAGE' | translate">
+        @for (language of languages; track language.code) {
+          <option [value]="language.code" [selected]="language.code === selectedLanguage">{{ language.name }}</option>
+        }
+      </select>
+
+      <button type="button" class="icon-btn" (click)="toggleTheme()" [attr.aria-label]="'THEME' | translate">
+        <i class="pi" [class.pi-moon]="currentTheme === 'light'" [class.pi-sun]="currentTheme === 'dark'" aria-hidden="true"></i>
+      </button>
+
+      <button type="button" class="cta cta--ghost" (click)="openApp()">{{ 'MAIN_PAGE.NAV.SIGN_IN' | translate }}</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">{{ 'MAIN_PAGE.HERO.EYEBROW' | translate }}</span>
+        <h1 id="hero-heading">{{ 'MAIN_PAGE.HERO.TITLE' | translate }}</h1>
+        <p class="lead">{{ 'MAIN_PAGE.HERO.LEAD' | translate }}</p>
+
+        <div class="actions">
+          <button type="button" class="cta cta--solid" (click)="openApp()">{{ 'MAIN_PAGE.HERO.PRIMARY_CTA' | translate }}</button>
+          <button type="button" class="cta cta--ghost" (click)="scrollTo('features')">{{ 'MAIN_PAGE.HERO.SECONDARY_CTA' | translate }}</button>
+        </div>
+
+        <ul class="hero-notes">
+          <li>{{ 'MAIN_PAGE.HERO.NOTE_1' | translate }}</li>
+          <li>{{ 'MAIN_PAGE.HERO.NOTE_2' | translate }}</li>
+          <li>{{ 'MAIN_PAGE.HERO.NOTE_3' | translate }}</li>
+        </ul>
+      </div>
+
+      <!-- A stylised dashboard; replace it with a real screenshot of the app. -->
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-card">
+          <div class="preview">
+            <div class="preview-bar"><span></span><span></span><span></span></div>
+
+            <div class="preview-kpis">
+              <div class="preview-kpi"><strong>1,284</strong><span>{{ 'MAIN_PAGE.HERO.PREVIEW_USERS' | translate }}</span></div>
+              <div class="preview-kpi"><strong>312</strong><span>{{ 'MAIN_PAGE.HERO.PREVIEW_ACTIVE' | translate }}</span></div>
+              <div class="preview-kpi"><strong>0</strong><span>{{ 'MAIN_PAGE.HERO.PREVIEW_ERRORS' | translate }}</span></div>
+            </div>
+
+            <div class="preview-chart">
+              @for (bar of previewBars; track $index) {
+                <span [style.height.%]="bar"></span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" class="section section--tint" aria-labelledby="how-heading">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">{{ 'MAIN_PAGE.HOW.EYEBROW' | translate }}</span>
+        <h2 id="how-heading">{{ 'MAIN_PAGE.HOW.TITLE' | translate }}</h2>
+      </header>
+
+      <ol class="steps">
+        <li class="step">
+          <span class="step-index">01</span>
+          <h3>{{ 'MAIN_PAGE.HOW.STEP_1_TITLE' | translate }}</h3>
+          <p>{{ 'MAIN_PAGE.HOW.STEP_1_TEXT' | translate }}</p>
+        </li>
+        <li class="step">
+          <span class="step-index">02</span>
+          <h3>{{ 'MAIN_PAGE.HOW.STEP_2_TITLE' | translate }}</h3>
+          <p>{{ 'MAIN_PAGE.HOW.STEP_2_TEXT' | translate }}</p>
+        </li>
+        <li class="step">
+          <span class="step-index">03</span>
+          <h3>{{ 'MAIN_PAGE.HOW.STEP_3_TITLE' | translate }}</h3>
+          <p>{{ 'MAIN_PAGE.HOW.STEP_3_TEXT' | translate }}</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="section" aria-labelledby="features-heading">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">{{ 'MAIN_PAGE.FEATURES.EYEBROW' | translate }}</span>
+        <h2 id="features-heading">{{ 'MAIN_PAGE.FEATURES.TITLE' | translate }}</h2>
+        <p class="section-lead">{{ 'MAIN_PAGE.FEATURES.LEAD' | translate }}</p>
+      </header>
+
+      <div class="feature-grid">
+        @for (feature of features; track feature.titleKey) {
+          <article class="feature">
+            <i class="pi {{ feature.icon }}" aria-hidden="true"></i>
+            <h3>{{ feature.titleKey | translate }}</h3>
+            <p>{{ feature.textKey | translate }}</p>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing -->
+  <section class="section section--tint closing" aria-labelledby="closing-heading">
+    <div class="container closing-inner">
+      <h2 id="closing-heading">{{ 'MAIN_PAGE.CLOSING.TITLE' | translate }}</h2>
+      <p>{{ 'MAIN_PAGE.CLOSING.TEXT' | translate }}</p>
+      <div class="actions">
+        <button type="button" class="cta cta--solid" (click)="openApp()">{{ 'MAIN_PAGE.HERO.PRIMARY_CTA' | translate }}</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="brand-mark" aria-hidden="true">{{ appName.charAt(0) }}</span>
+      <div>
+        <p class="footer-name">{{ appName }}</p>
+        <p class="footer-tagline">{{ 'MAIN_PAGE.FOOTER.TAGLINE' | translate }}</p>
+      </div>
+    </div>
+
+    <nav class="footer-nav" [attr.aria-label]="'MAIN_PAGE.FOOTER.NAV_LABEL' | translate">
+      <button type="button" (click)="scrollTo('how')">{{ 'MAIN_PAGE.NAV.HOW_IT_WORKS' | translate }}</button>
+      <button type="button" (click)="scrollTo('features')">{{ 'MAIN_PAGE.NAV.FEATURES' | translate }}</button>
+      <button type="button" (click)="openApp()">{{ 'MAIN_PAGE.NAV.SIGN_IN' | translate }}</button>
+    </nav>
+
+    <small class="footer-copy">© {{ year }} {{ appName }}</small>
+  </div>
+</footer>

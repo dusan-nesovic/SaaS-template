@@ -1,0 +1,27 @@
+.form-wrapper {
+  display: grid;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgrey;
+  .form {
+    display: inherit;
+    justify-items: center;
+    row-gap: 2rem;
+    background-color: white;
+    padding: 2rem 2rem 2rem 2rem;
+    border-radius: 0.3rem;
+    border-top: 0.25rem solid lightgreen;
+    border-bottom: 0.25rem solid lightgreen;
+    button {
+        width: 100%;
+        background-color: lightgreen;
+        border: none;
+        padding: 0.6rem;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: lightblue;
+      }
+  }
+}
