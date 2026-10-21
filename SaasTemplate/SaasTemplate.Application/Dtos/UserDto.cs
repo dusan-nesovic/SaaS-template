@@ -25,8 +25,13 @@ namespace SaasTemplate.Application.Dtos
             FirstName = user.FirstName;
             LastName = user.LastName;
             UserName = user.UserName!;
+            Theme = (ThemeType)user.Theme;
+            Language = user.Language;
         }
 
+        // The saved preference, applied by the client on sign-in.
+        public ThemeType Theme { get; set; }
+        public string? Language { get; set; }
         public string? Picture { get; set; }
         public string Token { get; set; }
         public bool RequiresExternalLogin { get; set; } = false;

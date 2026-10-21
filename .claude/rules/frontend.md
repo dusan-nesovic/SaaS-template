@@ -27,7 +27,7 @@ Root: `SaasTemplate/SaasTemplate.Web/ClientApp/`.
 - Preferences: `ThemeService` (light / dark) and `LanguageService` keep the choice in localStorage; nothing is stored on the account.
 - Enums: `enumToOptions(Enum, 'PREFIX')` for selects, `enumName` pipe for display.
 - Shared building blocks in `libs/shared/components`: `app-donut-chart` (categorical breakdowns; a category's color slot is fixed by the caller, never by rank), `app-modal`.
-- Lists are `app-data-grid`: column definitions (`GridColumn`, with `sortValue` for every sortable column and a `mobile` slot for the phone card) plus one `<ng-template appGridCell="key" let-row>` per column. It sorts, paginates and turns rows into cards on a phone; the page only filters and must pass a stored array (`filteredX`), never a getter. Reference: `admin-panel/users`.
+- Lists are `app-data-grid`: column definitions (`GridColumn`, with `sortValue` for every sortable column and a `mobile` slot for the phone card) plus one `<ng-template appGridCell="key" let-row>` per column. It sorts, paginates and turns rows into cards on a phone; the page only filters and must pass a stored array (`filteredX`), never a getter. References: `admin-panel/users`, `error-logs` (row opens its details in an `app-modal`).
 - Filter rows use the studio's `.filter-bar`, `.mode-toggle` / `.mode-btn` and `.filter-search`. Names and e-mail addresses never wrap.
 - The admin panel is one page with tabs as child routes (`admin/users`, ...); a new admin list becomes another tab, not another menu item.
 - Dates from the API are UTC; convert with `convertToLocalDate`.

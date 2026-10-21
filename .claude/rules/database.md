@@ -6,10 +6,11 @@ paths:
   - "DBScripts/**"
 ---
 
-# Database (PostgreSQL 16, EF Core 9)
+# Database (PostgreSQL 16, EF Core 10)
 
 ## Model
 - `User`, `Role` (+ Identity's `IdentityUserRole<Guid>`, `IdentityUserLogin<Guid>`) — ASP.NET Core Identity types, `Guid` keys.
+- `User.Theme` is stored as `int` (`ThemeType`: 0 System, 1 Light, 2 Dark); `User.Language` is a language code (`Constants.LANGUAGES`) or null until the user picks one. Both are written only by `UpdatePreferenceCommand` and returned on sign-in in `UserProfileDto`.
 - The app's own entities go next to them; see the `ef-migration` skill.
 
 ## Entities

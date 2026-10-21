@@ -1,7 +1,15 @@
 <div class="tp-wrap" [class.tp-open]="isOpen" [class.open-up]="openUpward && isOpen">
 
   <!-- Trigger -->
-  <div class="tp-trigger" (click)="toggle()">
+  <div
+    class="tp-trigger"
+    role="button"
+    tabindex="0"
+    aria-haspopup="listbox"
+    [attr.aria-expanded]="isOpen"
+    (click)="toggle()"
+    (keydown.enter)="toggle()"
+    (keydown.space)="$event.preventDefault(); toggle()">
     <i class="pi pi-clock tp-icon"></i>
     <span class="tp-value" [class.tp-placeholder]="selectedHour === null">
       {{ displayValue || displayPlaceholder }}
@@ -14,11 +22,15 @@
     <div class="tp-cols">
 
       <!-- Hours -->
-      <ul class="tp-list">
+      <ul class="tp-list" role="listbox">
         <li *ngFor="let h of hours"
             class="tp-item"
+            role="option"
+            tabindex="0"
+            [attr.aria-selected]="h === selectedHour"
             [class.tp-item--active]="h === selectedHour"
-            (click)="pickHour(h)">
+            (click)="pickHour(h)"
+            (keydown.enter)="pickHour(h)">
           {{ padNum(h) }}
         </li>
       </ul>
@@ -26,11 +38,15 @@
       <div class="tp-colon">:</div>
 
       <!-- Minutes -->
-      <ul class="tp-list">
+      <ul class="tp-list" role="listbox">
         <li *ngFor="let m of minutes"
             class="tp-item"
+            role="option"
+            tabindex="0"
+            [attr.aria-selected]="m === selectedMinute"
             [class.tp-item--active]="m === selectedMinute"
-            (click)="pickMinute(m)">
+            (click)="pickMinute(m)"
+            (keydown.enter)="pickMinute(m)">
           {{ padNum(m) }}
         </li>
       </ul>

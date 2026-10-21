@@ -14,6 +14,7 @@ import { ILoginUserDto } from './interfaces';
 import { IUserDashboardDto } from './interfaces';
 import { IAdminDashboardDto } from './interfaces';
 import { IErrorLogDto } from './interfaces';
+import { IUserPreferenceDto } from './interfaces';
 import { IUserInfoDto } from './interfaces';
 
 @Injectable() export class BaseController
@@ -162,6 +163,39 @@ import { IUserInfoDto } from './interfaces';
 	{
 		return this.httpClient.get<IErrorLogDto[]>(
 		this.settingsService.createApiUrl('Log/GetAllErrors'),
+		{
+			responseType: 'json',
+			observe: 'response',
+			withCredentials: true,
+		})
+		.pipe(map(response => response.body));
+		
+	}
+	constructor (httpClient: HttpClient, settingsService: SettingsService)
+	{
+		super(httpClient, settingsService);
+	}
+}
+@Injectable() export class PreferenceController extends BaseController
+{
+	public GetPreference() : Observable<IUserPreferenceDto>
+	{
+		return this.httpClient.get<IUserPreferenceDto>(
+		this.settingsService.createApiUrl('Preference/GetPreference'),
+		{
+			responseType: 'json',
+			observe: 'response',
+			withCredentials: true,
+		})
+		.pipe(map(response => response.body));
+		
+	}
+	public UpdatePreference(preference: IUserPreferenceDto) : Observable<IUserPreferenceDto>
+	{
+		const body = <any>preference;
+		return this.httpClient.post<IUserPreferenceDto>(
+		this.settingsService.createApiUrl('Preference/UpdatePreference'),
+		body,
 		{
 			responseType: 'json',
 			observe: 'response',

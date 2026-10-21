@@ -7,10 +7,7 @@
           <span class="pref-hint">{{ 'PREFERENCE.THEME_HINT' | translate }}</span>
         </div>
 
-        <button class="btn pref-control" type="button" (click)="toggleTheme()">
-          <i class="pi" [class.pi-moon]="currentTheme === 'light'" [class.pi-sun]="currentTheme === 'dark'" aria-hidden="true"></i>
-          {{ (currentTheme === 'dark' ? 'THEME_DARK' : 'THEME_LIGHT') | translate }}
-        </button>
+        <app-select class="pref-control" [(ngModel)]="selectedTheme" [options]="themeOptions"></app-select>
       </div>
 
       <div class="pref-row">
@@ -19,7 +16,11 @@
           <span class="pref-hint">{{ 'PREFERENCE.LANGUAGE_HINT' | translate }}</span>
         </div>
 
-        <app-select class="pref-control" [(ngModel)]="selectedLanguage" [options]="languageOptions" (ngModelChange)="onLanguageChange({ value: $event })"></app-select>
+        <app-select class="pref-control" [(ngModel)]="selectedLanguage" [options]="languageOptions"></app-select>
+      </div>
+
+      <div class="pref-actions">
+        <button class="btn primary" type="button" [disabled]="!hasChanges" (click)="onSave()">{{ 'SAVE' | translate }}</button>
       </div>
     </div>
   </div>

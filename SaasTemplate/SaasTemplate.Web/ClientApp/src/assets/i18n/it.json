@@ -78,6 +78,14 @@
     "PAGES": "Pagine",
     "EMPTY": "Ancora niente qui"
   },
+  "ERROR_LOGS_GRID": {
+    "SEARCH": "Cerca per messaggio, origine o utente",
+    "ALL_TIME": "Sempre",
+    "LAST_DAY": "Ultime 24 ore",
+    "LAST_WEEK": "Ultimi 7 giorni",
+    "DETAILS": "Dettagli",
+    "NO_MATCH": "Nessun errore corrisponde a questi filtri"
+  },
   "ADMIN": {
     "TAB_USERS": "Utenti",
     "SEARCH_USERS": "Cerca per nome o e-mail",
@@ -142,6 +150,7 @@
   },
   "TOAST": {
     "SAVED": "Salvato",
+    "PREFERENCE_SAVED_DETAIL": "Le tue preferenze sono state salvate.",
     "CREATED": "Creato",
     "DELETED": "Eliminato",
     "REGISTERED": "Account creato",

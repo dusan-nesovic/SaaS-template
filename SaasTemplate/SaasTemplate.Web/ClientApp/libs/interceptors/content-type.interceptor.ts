@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 export class ContentTypeInterceptor implements HttpInterceptor {
   // Public methods
 
-  public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!request.headers.has('Content-Type')) {
       request = request.clone({
         headers: request.headers.set('Content-Type', 'application/json'),

@@ -78,6 +78,14 @@
     "PAGES": "Stranice",
     "EMPTY": "Ovde još nema ničega"
   },
+  "ERROR_LOGS_GRID": {
+    "SEARCH": "Pretraga po poruci, izvoru ili korisniku",
+    "ALL_TIME": "Sve",
+    "LAST_DAY": "Poslednja 24 sata",
+    "LAST_WEEK": "Poslednjih 7 dana",
+    "DETAILS": "Detalji",
+    "NO_MATCH": "Nijedna greška ne odgovara filterima"
+  },
   "ADMIN": {
     "TAB_USERS": "Korisnici",
     "SEARCH_USERS": "Pretraga po imenu ili mejlu",
@@ -142,6 +150,7 @@
   },
   "TOAST": {
     "SAVED": "Sacuvano",
+    "PREFERENCE_SAVED_DETAIL": "Podešavanja su sačuvana.",
     "CREATED": "Napravljeno",
     "DELETED": "Obrisano",
     "REGISTERED": "Nalog napravljen",

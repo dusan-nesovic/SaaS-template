@@ -19,6 +19,12 @@ namespace SaasTemplate.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.Property(x => x.Theme)
+                .IsRequired();
+
+            builder.Property(x => x.Language)
+                .HasMaxLength(10);
+
             builder.Property(x => x.CreatedOn)
                 .IsRequired();
         }

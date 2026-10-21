@@ -1,7 +1,4 @@
-// Angular modules
 import { Injectable, OnDestroy } from '@angular/core';
-
-// Third-party modules
 import { Subject } from 'rxjs';
 
 @Injectable()

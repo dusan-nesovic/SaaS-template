@@ -8,7 +8,7 @@ import { Constants } from '@Workspace/common';
 import { BaseComponent, withSpinner } from '@Workspace/shared';
 import { IUserProfileDto } from '@Workspace/_generated/interfaces';
 import { AuthController } from '@Workspace/_generated/services';
-import { AuthService, LoadingSpinnerService, ThemeService } from '@Workspace/services';
+import { AuthService, LanguageService, LoadingSpinnerService, ThemeService } from '@Workspace/services';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +22,7 @@ export class LoginComponent extends BaseComponent implements OnInit, OnDestroy {
   // Google's own rendered button is the only thing that is handed an ID token, and it refuses to
   // work when it is hidden - so the site's button asks for an authorization code instead, which the
   // server trades for that token (AuthController.GoogleCodeLogin).
-  private codeClient: any;
+  private codeClient: GoogleCodeClient | null = null;
   private googleRetryTimer?: number;
 
   constructor(
@@ -32,7 +32,8 @@ export class LoginComponent extends BaseComponent implements OnInit, OnDestroy {
     private authController: AuthController,
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private languageService: LanguageService
   ) {
     super(loadingSpinnerService, router, route);
   }
@@ -68,7 +69,7 @@ export class LoginComponent extends BaseComponent implements OnInit, OnDestroy {
 
   // Private methods
 
-  private onGoogleCode(response: any): void {
+  private onGoogleCode(response: GoogleCodeResponse): void {
     if (!response?.code) {
       return;
     }
@@ -102,7 +103,7 @@ export class LoginComponent extends BaseComponent implements OnInit, OnDestroy {
       client_id: Constants.GOOGLE_CLIENT_ID,
       scope: 'openid email profile',
       ux_mode: 'popup',
-      callback: (response: any) => this.onGoogleCode(response),
+      callback: response => this.onGoogleCode(response),
     });
 
     this.isGoogleReady = true;
@@ -116,6 +117,9 @@ export class LoginComponent extends BaseComponent implements OnInit, OnDestroy {
     if (res.requiresExternalLogin === false) {
       this.authService.user.next(res);
       localStorage.setItem('user', JSON.stringify(res));
+      // The account's saved preference wins over whatever this browser used before signing in.
+      this.themeService.setPreference(ThemeService.fromEnum(res.theme));
+      if (res.language) this.languageService.setUserLanguage(res.language);
       this.authService.autoLogout(new Date(res.expiresIn).getTime() - new Date().getTime());
       this.router.navigate(['app/dashboard']);
       return;
@@ -127,8 +131,30 @@ export class LoginComponent extends BaseComponent implements OnInit, OnDestroy {
   }
 }
 
+// The part of Google Identity Services (accounts.google.com/gsi/client) this page uses.
+interface GoogleCodeResponse {
+  code?: string;
+}
+
+interface GoogleCodeClient {
+  requestCode(): void;
+}
+
+interface GoogleCodeClientConfig {
+  client_id: string;
+  scope: string;
+  ux_mode: 'popup' | 'redirect';
+  callback: (response: GoogleCodeResponse) => void;
+}
+
 declare global {
   interface Window {
-    google: any;
+    google?: {
+      accounts?: {
+        oauth2?: {
+          initCodeClient(config: GoogleCodeClientConfig): GoogleCodeClient;
+        };
+      };
+    };
   }
 }

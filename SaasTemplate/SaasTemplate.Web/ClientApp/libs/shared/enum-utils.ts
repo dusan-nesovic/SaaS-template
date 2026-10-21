@@ -4,9 +4,9 @@ export interface IEnumOption<T = number> {
 }
 
 export function enumToOptions<T>(
-  enumType: any,
+  enumType: Record<string, string | number>,
   translatePrefix?: string,
-  toUpperCase: boolean = true
+  toUpperCase = true
 ): IEnumOption<T>[] {
 
   return Object.keys(enumType)
@@ -20,7 +20,7 @@ export function enumToOptions<T>(
       }
 
       return {
-        value: enumType[key],
+        value: enumType[key] as T,
         label: labelKey
       };
     });

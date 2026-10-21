@@ -1,7 +1,15 @@
 <div class="dp-wrap" [class.dp-open]="isOpen" [class.open-up]="openUpward && isOpen">
 
   <!-- Trigger -->
-  <div class="dp-trigger" (click)="toggle()">
+  <div
+    class="dp-trigger"
+    role="button"
+    tabindex="0"
+    aria-haspopup="dialog"
+    [attr.aria-expanded]="isOpen"
+    (click)="toggle()"
+    (keydown.enter)="toggle()"
+    (keydown.space)="$event.preventDefault(); toggle()">
     <i class="pi pi-calendar dp-icon"></i>
     <span class="dp-value" [class.dp-placeholder]="!value">
       {{ value ? displayValue : displayPlaceholder }}

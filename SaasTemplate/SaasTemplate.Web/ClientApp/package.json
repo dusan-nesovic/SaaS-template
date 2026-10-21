@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build:prod": "ng build ClientApp --configuration production --base-href=/ --deploy-url=/ --output-path=dist/client-app",
-    "build:dev": "ng build ClientApp --configuration development --base-href=/ --deploy-url=/ --output-path=dist/client-app"
+    "build:dev": "ng build ClientApp --configuration development --base-href=/ --deploy-url=/ --output-path=dist/client-app",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -36,12 +37,16 @@
     "@angular/cli": "^18.1.1",
     "@angular/compiler-cli": "^18.1.0",
     "@types/jasmine": "~5.1.0",
+    "angular-eslint": "18.4.3",
+    "eslint": "^9.15.0",
+    "eslint-config-prettier": "^10.1.8",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.5.2"
+    "typescript": "~5.5.2",
+    "typescript-eslint": "8.16.0"
   }
 }

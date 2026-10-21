@@ -8,7 +8,7 @@
     <div class="sel-panel" [ngStyle]="panelStyle">
       <ul class="sel-list" role="listbox">
         @for (opt of options; track opt.value) {
-          <li role="option" class="sel-item" [class.sel-item--active]="isSelected(opt)" [attr.aria-selected]="isSelected(opt)" (click)="select(opt)">
+          <li role="option" class="sel-item" [class.sel-item--active]="isSelected(opt)" [attr.aria-selected]="isSelected(opt)" tabindex="0" (click)="select(opt)" (keydown.enter)="select(opt)">
             <span>{{ opt.label }}</span>
           </li>
         }

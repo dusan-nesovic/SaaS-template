@@ -53,17 +53,20 @@ namespace SaasTemplate.Web.ReinforcedTypings
         {
             Func<Type, bool> predicate = p => !p.IsAbstract && !p.IsGenericTypeDefinition;
 
+            // Namespace is null for types in the global namespace, e.g. the public Program class the .NET 10 Web SDK generates.
+
             builder.ExportAsInterfaces(
-                Assembly.GetAssembly(typeof(UserDto))!.ExportedTypes.Where(predicate).Where(i => i.Namespace!.StartsWith("SaasTemplate.Application.Dtos")).ToArray(), _interfaceConfiguration
+                Assembly.GetAssembly(typeof(UserDto))!.ExportedTypes.Where(predicate).Where(i => i.Namespace?.StartsWith("SaasTemplate.Application.Dtos") == true).ToArray(), _interfaceConfiguration
             );
 
             builder.ExportAsClasses(
-                Assembly.GetAssembly(typeof(BaseController))!.ExportedTypes.Where(predicate).Where(i => i.Namespace!.StartsWith($"{SOLUTION_NAMESPACE}.Web.Controllers")).OrderBy(i => i.Name).OrderBy(i => i.Name != nameof(BaseController)).ToArray(), _serviceConfiguration
+                Assembly.GetAssembly(typeof(BaseController))!.ExportedTypes.Where(predicate).Where(i => i.Namespace?.StartsWith($"{SOLUTION_NAMESPACE}.Web.Controllers") == true).OrderBy(i => i.Name).OrderBy(i => i.Name != nameof(BaseController)).ToArray(), _serviceConfiguration
             );
 
             builder.ExportAsEnums(new Type[]
                 {
-                    typeof(UserRoleType)
+                    typeof(UserRoleType),
+                    typeof(ThemeType)
                 }, 
                 conf => conf.ExportTo("enums.ts")
                 //.WithCodeGenerator<EnumsGenerator>()

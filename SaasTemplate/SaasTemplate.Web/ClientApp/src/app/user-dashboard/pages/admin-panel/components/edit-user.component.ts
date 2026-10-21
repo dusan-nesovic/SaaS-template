@@ -73,7 +73,7 @@ export class EditUserComponent extends BaseDashboardComponent implements OnInit,
         .pipe(withSpinner(this.loadingSpinnerService), takeUntil(this.unsubscribe$))
         .subscribe((res) => {
           this.selectedUser = res;
-          this.selectedUser.userRoles.forEach((item: any, index: any) => {
+          this.selectedUser.userRoles.forEach(item => {
             if(item != UserRoleType.User)
             this.list2.push(item);
           });

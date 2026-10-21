@@ -6,13 +6,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class SubjectService {
-  private subjects: Map<string, BehaviorSubject<any>> = new Map();
+  private subjects = new Map<string, BehaviorSubject<unknown>>();
 
   // Public methods
 
   public createSubject<T>(key: string, initialValue: T): void {
     if (!this.subjects.has(key)) {
-      this.subjects.set(key, new BehaviorSubject<T>(initialValue));
+      this.subjects.set(key, new BehaviorSubject<unknown>(initialValue));
     } else {
       console.error(`Subject with key '${key}' already exists.`);
     }
@@ -23,7 +23,7 @@ export class SubjectService {
     if (!subject) {
       throw new Error(`Subject with key '${key}' does not exist.`);
     }
-    return subject.asObservable();
+    return subject.asObservable() as Observable<T>;
   }
 
   public updateSubjectValue<T>(key: string, newValue: T): void {

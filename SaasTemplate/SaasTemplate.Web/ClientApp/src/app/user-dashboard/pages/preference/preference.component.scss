@@ -14,9 +14,16 @@
   padding: 1rem 0;
 
   &:first-child { padding-top: 0; }
-  &:last-child { padding-bottom: 0; }
 
   & + .pref-row { border-top: 1px solid var(--hair-soft); }
+}
+
+/* Nothing is stored until Save, so the button sits under both settings. */
+.pref-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid var(--hair-soft);
 }
 
 .pref-copy {
@@ -42,11 +49,6 @@
   width: 11rem;
 }
 
-/* The theme button keeps its label centred next to the icon. */
-button.pref-control {
-  justify-content: center;
-}
-
 @include mobile {
   .pref-row {
     flex-direction: column;
@@ -55,4 +57,6 @@ button.pref-control {
   }
 
   .pref-control { width: 100%; }
+
+  .pref-actions .btn { flex: 1; }
 }

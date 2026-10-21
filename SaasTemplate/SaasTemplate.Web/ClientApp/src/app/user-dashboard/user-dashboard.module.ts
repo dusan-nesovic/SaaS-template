@@ -47,6 +47,7 @@ import { UserDashboardComponent } from './user-dashboard.component';
     // Controllers
     controllers.AuthController,
     controllers.LogController,
+    controllers.PreferenceController,
     controllers.UserController,
     // Guards
     AdminGuard,

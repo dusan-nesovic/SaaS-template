@@ -1,5 +1,5 @@
 // Angular modules
-import { HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 // Third-party modules
@@ -13,7 +13,7 @@ import { AuthService, LoadingSpinnerService, ToastService } from '@Workspace/ser
 interface ApiErrorPayload {
   statusCode?: number;
   message?: string;
-  errors?: { [propertyName: string]: string[] };
+  errors?: Record<string, string[]>;
 }
 
 @Injectable()
@@ -25,7 +25,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private translate: TranslateService
   ) {}
 
-  public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
+  public intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(req).pipe(
       catchError((response: HttpErrorResponse) => {
         this.loadingSpinnerService.takeLoadingSpinner();
@@ -73,7 +73,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     return response.error as ApiErrorPayload;
   }
 
-  private formatValidationErrors(errors: { [propertyName: string]: string[] }): string {
+  private formatValidationErrors(errors: Record<string, string[]>): string {
     return Object.entries(errors)
       .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
       .join('\n');

@@ -25,11 +25,11 @@ export class ToastService {
    * that is already in its final form - a validation message from the API, for
    * instance, which the client cannot translate.
    */
-  public addToastKey(severity: string, summaryKey: string, detailKey: string, life: number = 1000) {
+  public addToastKey(severity: string, summaryKey: string, detailKey: string, life = 1000) {
     this.addToastMessage(severity, this.translate.instant(summaryKey), this.translate.instant(detailKey), life);
   }
 
-  public addToastMessage(severity: string, summary: string, detail: string, life: number = 1000) {
+  public addToastMessage(severity: string, summary: string, detail: string, life = 1000) {
     this.messageService.add({
       severity: severity,
       summary: summary,

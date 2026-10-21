@@ -12,16 +12,19 @@ import { LoadingSpinnerService } from '@Workspace/services';
 export class ErrorHandlerService implements ErrorHandler {
   constructor(private loadingSpinnerService: LoadingSpinnerService, private messageService: MessageService) {}
 
-  public handleError(error: any): void {
+  public handleError(error: unknown): void {
     console.error('Unhandled error:', error);
     this.loadingSpinnerService.takeLoadingSpinner();
 
+    // A rejected promise arrives wrapped, with the original error in `rejection`.
+    const { rejection, message } = (error ?? {}) as { rejection?: unknown; message?: string };
+
     // HTTP errors are already toasted by HttpErrorInterceptor — skip double-toast.
-    if (error instanceof HttpErrorResponse || error?.rejection instanceof HttpErrorResponse) {
+    if (error instanceof HttpErrorResponse || rejection instanceof HttpErrorResponse) {
       return;
     }
 
-    const detail = error?.message ?? 'An unexpected error has occurred.';
+    const detail = message ?? 'An unexpected error has occurred.';
     this.messageService.add({ severity: 'error', summary: 'Application error', detail });
   }
 }

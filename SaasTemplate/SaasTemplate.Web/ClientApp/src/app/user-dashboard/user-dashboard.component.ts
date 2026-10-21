@@ -12,7 +12,7 @@ import { IMenuItem } from '@Workspace/interfaces';
 import { MenuItems } from '@Workspace/models';
 import { UserController } from '@Workspace/_generated/services';
 import { AuthService, LoadingSpinnerService, SubjectService } from '@Workspace/services';
-import { BaseDashboardComponent, convertArrayBufferToBase64, withSpinner } from '@Workspace/shared';
+import { BaseDashboardComponent } from '@Workspace/shared';
 import { ThemeService } from 'libs/services/theme.service';
 
 @Component({
@@ -23,7 +23,6 @@ import { ThemeService } from 'libs/services/theme.service';
 export class UserDashboardComponent extends BaseDashboardComponent implements OnInit {
   menuItems: IMenuItem[] = [];
   activeLink: string = Constants.DEFAULT_MENU;
-  appName = Constants.APP_NAME;
   userProfileImage: string | null = 'assets/images/user.png';
 
   isSidebarCollapsed = window.innerWidth <= 768;

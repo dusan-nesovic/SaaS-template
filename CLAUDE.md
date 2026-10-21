@@ -3,17 +3,18 @@
 Starter for a SaaS app: public landing page plus a signed-in area (CRM) with registration and login (email + Google), dashboard (user and admin view), admin panel (users and roles), an error log viewer (unhandled exceptions) and user preferences (theme, language). The app's own features are added on top of it.
 
 ## Stack
-- Backend: .NET 9, ASP.NET Core controllers, MediatR, FluentValidation, Identity + JWT + Google login, Serilog, SMTP email.
-- Database: PostgreSQL 16, EF Core 9 (Npgsql).
+- Backend: .NET 10, ASP.NET Core controllers, MediatR, FluentValidation, Identity + JWT + Google login, Serilog, SMTP email.
+- Database: PostgreSQL 16, EF Core 10 (Npgsql).
 - Frontend: Angular 18 (NgModules), PrimeNG, Angular Material, ngx-translate.
 - Infra: Docker Compose; production on Hetzner: Caddy (TLS) → `web` (nginx :4200) → `/api/` → `api` (:8080) → `db`.
 
 ## Layout
 ```
-docker.ps1, docker-compose*.yml, Caddyfile, DEPLOYMENT.md
+docker.ps1, docker-compose*.yml, Caddyfile, DEPLOYMENT.md, global.json (SDK 10)
 .template.config/              dotnet new template definition (usage: TEMPLATE.md)
 DBScripts/                     manual SQL
 SaasTemplate/
+  SaasTemplate.slnx, Directory.Build.props (target framework), Directory.Packages.props (package versions)
   Dockerfile (api), Dockerfile.angular (web), nginx.conf
   SaasTemplate.Domain/          entities only
   SaasTemplate.Application/     BusinessLogic/<Feature>/{Commands,Queries}, Dtos/, Interfaces/
@@ -27,7 +28,7 @@ SaasTemplate/
 |---|---|
 | Dev stack (db, api watch, ng serve, pgadmin :5050) | `./docker.ps1 dev up --build` |
 | Stop / logs | `./docker.ps1 dev down` · `./docker.ps1 dev logs -f api` |
-| Build backend | `$env:CI='true'; dotnet build SaasTemplate/SaasTemplate.sln` |
+| Build backend | `$env:CI='true'; dotnet build SaasTemplate/SaasTemplate.slnx` |
 | Type-check frontend | `npx tsc --noEmit -p tsconfig.app.json` (in `ClientApp`) |
 | Add migration | `dotnet ef migrations add <Name> --project SaasTemplate/SaasTemplate.Infrastructure` |
 

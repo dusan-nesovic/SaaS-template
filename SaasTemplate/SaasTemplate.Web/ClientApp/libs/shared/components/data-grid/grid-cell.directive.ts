@@ -14,5 +14,5 @@ import { Directive, Input, TemplateRef } from '@angular/core';
 export class GridCellDirective {
   @Input('appGridCell') key = '';
 
-  constructor(public template: TemplateRef<{ $implicit: any }>) {}
+  constructor(public template: TemplateRef<{ $implicit: unknown }>) {}
 }

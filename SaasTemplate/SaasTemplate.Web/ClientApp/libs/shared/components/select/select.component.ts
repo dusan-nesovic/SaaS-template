@@ -1,9 +1,10 @@
 import { Component, ElementRef, forwardRef, HostListener, Input, NgZone, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { noop } from 'rxjs';
 
 export interface SelectOption {
   label: string;
-  value: any;
+  value: unknown;
 }
 
 @Component({
@@ -32,12 +33,12 @@ export class AppSelectComponent implements ControlValueAccessor, OnDestroy {
    * itself. A larger z-index does not help with that: the list was not behind
    * anything, it was cut off. Taking it out of the flow is what fixes it.
    */
-  panelStyle: { [key: string]: string } = {};
+  panelStyle: Record<string, string> = {};
 
-  private _value: any = null;
+  private _value: unknown = null;
 
-  private onChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
+  private onChange: (value: unknown) => void = noop;
+  private onTouched: () => void = noop;
 
   /* Bound in the capture phase on `document`, because scroll does not bubble:
      the control usually sits inside a scrolling container - the studio's
@@ -112,12 +113,12 @@ export class AppSelectComponent implements ControlValueAccessor, OnDestroy {
 
   // ControlValueAccessor
 
-  writeValue(value: any): void {
+  writeValue(value: unknown): void {
     this._value = value ?? null;
   }
 
-  registerOnChange(fn: any): void { this.onChange = fn; }
-  registerOnTouched(fn: any): void { this.onTouched = fn; }
+  registerOnChange(fn: (value: unknown) => void): void { this.onChange = fn; }
+  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
 
   // Private methods
 

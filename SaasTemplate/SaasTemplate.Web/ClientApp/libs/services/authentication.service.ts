@@ -13,7 +13,7 @@ import { Constants } from '@Workspace/common';
 @Injectable()
 export class AuthService {
   user = new BehaviorSubject<IUserProfileDto>(null!);
-  tokenExpirationTimer: any;
+  tokenExpirationTimer: ReturnType<typeof setTimeout> | null;
 
   constructor(private router: Router) {}
 

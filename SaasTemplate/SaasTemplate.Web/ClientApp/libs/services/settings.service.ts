@@ -2,7 +2,6 @@
 import { Injectable } from '@angular/core';
 
 // Project modules
-import { Constants } from '@Workspace/common';
 import { environment } from 'src/environments/environment';
 
 @Injectable()

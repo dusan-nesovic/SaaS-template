@@ -20,4 +20,4 @@ After changing the template, refresh the installed copy:
 dotnet new install . --force
 ```
 
-Template parameters: `-n` (solution and namespace name; also gives the Docker project name and the `<NAME>_DB` variable), `--appTitle` (brand name in the UI and emails), `--googleClientId`.
+Template parameters: `-n` (solution and namespace name; also gives the Docker project name and the `<NAME>_DB` variable), `--appTitle` (brand name in the UI and emails; its first letter, upper-cased, is the logo mark), `--googleClientId`.

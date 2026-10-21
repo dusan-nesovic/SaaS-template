@@ -3,6 +3,7 @@
 //     the code is regenerated.
 
 import { UserRoleType } from './enums';
+import { ThemeType } from './enums';
 
 export interface IErrorLogDto
 {
@@ -29,10 +30,17 @@ export interface IUserInfoDto extends IUserDto
 }
 export interface IUserProfileDto extends IUserDto
 {
+	theme: ThemeType;
+	language?: string;
 	picture?: string;
 	token: string;
 	requiresExternalLogin: boolean;
 	expiresIn: Date;
+}
+export interface IUserPreferenceDto
+{
+	theme: ThemeType;
+	language?: string;
 }
 export interface IAdminDashboardDto
 {

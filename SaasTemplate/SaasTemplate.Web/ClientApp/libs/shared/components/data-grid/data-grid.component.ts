@@ -18,7 +18,7 @@ export type GridSortDirection = 'asc' | 'desc';
  */
 export type GridMobileSlot = 'title' | 'aside' | 'line' | 'meta' | 'end' | 'hidden';
 
-export interface GridColumn<T = any> {
+export interface GridColumn<T = unknown> {
   // Matches the `appGridCell` template that renders the cell.
   key: string;
   // Translation key of the header; empty for a column without one (row actions).
@@ -48,13 +48,13 @@ type PageItem = number | 'gap';
   templateUrl: './data-grid.component.html',
   styleUrls: ['./data-grid.component.scss'],
 })
-export class DataGridComponent<T = any> implements OnChanges, AfterContentInit {
+export class DataGridComponent<T = unknown> implements OnChanges, AfterContentInit {
   @Input() rows: T[] = [];
   @Input() columns: GridColumn<T>[] = [];
   @Input() defaultSort: GridSort | null = null;
   @Input() pageSizes: number[] = [10, 25, 50];
   @Input() emptyKey = 'GRID.EMPTY';
-  @Input() trackBy: (row: T) => unknown = row => (row as any)?.id ?? row;
+  @Input() trackBy: (row: T) => unknown = row => (row as { id?: unknown })?.id ?? row;
   // Whether a row reacts to a click (and shows the pointer).
   @Input() clickable = false;
 
@@ -103,7 +103,7 @@ export class DataGridComponent<T = any> implements OnChanges, AfterContentInit {
   ngAfterContentInit(): void {
     const collect = () => {
       this.templates.clear();
-      this.cellTemplates?.forEach(cell => this.templates.set(cell.key, cell.template));
+      this.cellTemplates?.forEach(cell => this.templates.set(cell.key, cell.template as TemplateRef<{ $implicit: T }>));
     };
     collect();
     this.cellTemplates?.changes.subscribe(collect);

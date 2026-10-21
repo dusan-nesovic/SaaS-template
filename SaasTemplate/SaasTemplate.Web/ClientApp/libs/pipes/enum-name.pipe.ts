@@ -11,7 +11,7 @@ export class EnumNamePipe implements PipeTransform {
 
   transform(
     value: number | null | undefined,
-    enumType: any,
+    enumType: Record<number, string>,
     translatePrefix?: string
   ): string {
 

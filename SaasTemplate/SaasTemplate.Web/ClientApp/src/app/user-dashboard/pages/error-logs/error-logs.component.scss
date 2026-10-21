@@ -1,75 +1,54 @@
 @import "shared";
 
-/* A log is a list of disclosures rather than a table: the message is long, the
-   stack trace is longer, and a table forced both into a single line that was
-   then clipped. Each row opens in place. */
+/* The list is `app-data-grid` (sorting, paging, phone cards); panel, tag and
+   btn come from `.studio` in src/scss/_studio.scss. A row keeps the message on
+   one clipped line; the full message and the stack trace open in a dialog,
+   where they have room to wrap. */
 
-.log-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.log {
-  border-bottom: 1px solid var(--hair-soft);
-
-  &:last-child { border-bottom: none; }
-}
-
-.log-summary {
-  display: grid;
-  grid-template-columns: 0.75rem minmax(6rem, 11rem) minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.7rem;
-  width: 100%;
-  padding: 0.4rem 0;
-  border: none;
-  background: transparent;
-  font-family: inherit;
-  text-align: left;
-  cursor: pointer;
-
-  &:hover {
-    .log-source,
-    .log-message { color: var(--ink); }
-  }
-}
-
-.log-chevron {
-  font-size: 0.55rem;
-  color: var(--ink-faint);
-  transition: transform 0.15s ease;
-
-  .log.is-open & { transform: rotate(90deg); }
-}
-
-.log-source {
-  font-size: 0.74rem;
+/* =========================
+   Rows
+========================= */
+.cell-source {
+  display: block;
+  max-width: 14rem;
+  overflow: hidden;
   font-weight: 500;
-  color: var(--ink-soft);
-  white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
-  transition: color 0.15s ease;
 }
 
-.log-message {
-  font-size: 0.78rem;
-  color: var(--ink-soft);
-  white-space: nowrap;
+.cell-message {
+  display: block;
+  max-width: 32rem;
   overflow: hidden;
+  color: var(--ink-soft);
   text-overflow: ellipsis;
-  transition: color 0.15s ease;
 }
 
-.log-time {
-  font-size: 0.68rem;
+.cell-sub {
   color: var(--ink-faint);
+  font-size: 0.72rem;
+}
+
+.cell-date {
+  color: var(--ink-soft);
+}
+
+.row-open-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   white-space: nowrap;
+  color: var(--ink-faint);
+
+  i { font-size: 0.55rem; }
 }
 
 /* =========================
-   Opened row
+   Details dialog
 ========================= */
 .log-detail {
   display: grid;
@@ -100,6 +79,8 @@
 
 .log-trace {
   margin: 0;
+  max-height: 20rem;
+  overflow: auto;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.72rem;
   line-height: 1.55;
@@ -111,15 +92,8 @@
 }
 
 @include mobile {
-  .log-summary {
-    grid-template-columns: 0.75rem minmax(0, 1fr);
-    gap: 0.5rem 0.6rem;
-  }
-
-  .log-message,
-  .log-time {
-    grid-column: 2;
-  }
+  .cell-source,
+  .cell-message { max-width: none; }
 
   .log-detail { grid-template-columns: 1fr; }
 }

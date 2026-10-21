@@ -1,8 +1,13 @@
 // Third-party modules
 import { TranslateService } from '@ngx-translate/core';
 
+export interface ILanguage {
+  name: string;
+  code: string;
+}
+
 export class Languages {
-  public static items: any[] = [];
+  public static items: ILanguage[] = [];
 
   constructor(private translate: TranslateService) {
     this.initializeConstructor();

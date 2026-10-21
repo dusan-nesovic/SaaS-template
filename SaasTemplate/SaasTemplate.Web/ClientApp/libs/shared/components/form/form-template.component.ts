@@ -2,9 +2,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-// Project modules
-import { Constants } from '@Workspace/common';
-
 @Component({
   selector: 'app-form-template',
   templateUrl: './form-template.component.html',
@@ -15,10 +12,6 @@ export class FormTemplateComponent {
   @Input() subtitle?: string;
   @Input() formGroup!: FormGroup;
   @Output() formSubmit: EventEmitter<void> = new EventEmitter<void>();
-
-  appName = Constants.APP_NAME;
-
-  constructor() {}
 
   // Public methods
 

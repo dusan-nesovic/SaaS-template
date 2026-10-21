@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import { LoadingSpinnerService } from '@Workspace/services';
 
 @Directive({
-  selector: '[addLoadingSpinner]',
+  selector: '[appLoadingSpinner]',
 })
 export class AddLoadingSpinnerDirective implements OnDestroy {
   private sub: Subscription;

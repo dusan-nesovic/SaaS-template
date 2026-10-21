@@ -9,8 +9,8 @@ const ACTIONS_TOP_GAP = 12;
   styleUrls: ['./cms-content.component.scss'],
 })
 export class CmsContentComponent implements AfterViewInit, OnDestroy {
-  @Input() title: string = '';
-  @Input() description: string = '';
+  @Input() title = '';
+  @Input() description = '';
 
   @ViewChild('sentinel') sentinel?: ElementRef<HTMLElement>;
   @ViewChild('headWrap') headWrap?: ElementRef<HTMLElement>;

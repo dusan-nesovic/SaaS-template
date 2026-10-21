@@ -3,6 +3,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 // Third-party modules
 import { TranslateService } from '@ngx-translate/core';
+import { noop } from 'rxjs';
 
 @Component({
   selector: 'app-datepicker',
@@ -25,8 +26,8 @@ export class AppDatepickerComponent implements ControlValueAccessor {
   viewYear: number = new Date().getFullYear();
   viewMonth: number = new Date().getMonth();
 
-  private onChange: (value: Date | null) => void = () => {};
-  private onTouched: () => void = () => {};
+  private onChange: (value: Date | null) => void = noop;
+  private onTouched: () => void = noop;
 
   /** Month and weekday names per locale, built once and kept. */
   private static readonly namesByLocale = new Map<string, { months: string[]; weekdays: string[] }>();
@@ -154,6 +155,6 @@ export class AppDatepickerComponent implements ControlValueAccessor {
     this.value = isNaN(d.getTime()) ? null : d;
   }
 
-  registerOnChange(fn: any): void { this.onChange = fn; }
-  registerOnTouched(fn: any): void { this.onTouched = fn; }
+  registerOnChange(fn: (value: Date | null) => void): void { this.onChange = fn; }
+  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
 }

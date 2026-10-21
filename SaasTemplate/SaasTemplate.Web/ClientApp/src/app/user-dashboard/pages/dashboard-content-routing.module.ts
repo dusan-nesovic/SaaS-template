@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Project guards
 import { AdminGuard } from 'libs/guards/admin.guard';
-import { AuthenticationGuard } from '@Workspace/guards';
 
 // Project components
 import { AdminUsersComponent } from './admin-panel/users/admin-users.component';

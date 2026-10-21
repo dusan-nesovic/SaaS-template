@@ -7,3 +7,8 @@ export enum UserRoleType {
 	Admin = 1,
 	User = 2
 }
+export enum ThemeType {
+	System = 0,
+	Light = 1,
+	Dark = 2
+}

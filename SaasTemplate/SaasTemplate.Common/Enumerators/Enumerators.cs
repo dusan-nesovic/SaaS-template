@@ -11,4 +11,15 @@ namespace SaasTemplate.Common.Enumerators
         [Description("User")]
         User = 2
     }
+
+    // The app's colour scheme; System follows the device's light or dark setting.
+    public enum ThemeType
+    {
+        [Description("System")]
+        System = 0,
+        [Description("Light")]
+        Light = 1,
+        [Description("Dark")]
+        Dark = 2
+    }
 }

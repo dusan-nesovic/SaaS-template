@@ -9,7 +9,7 @@ disable-model-invocation: true
 Full runbook: `DEPLOYMENT.md` (server setup, `dc` alias, backups, diagnostics).
 
 ## Pre-flight (local)
-1. `$env:CI='true'; dotnet build SaasTemplate/SaasTemplate.sln`
+1. `$env:CI='true'; dotnet build SaasTemplate/SaasTemplate.slnx`
 2. `npx tsc --noEmit -p tsconfig.app.json` in `ClientApp`
 3. `git status` — `libs/_generated` and migrations committed, no `.env*` or logs staged.
 4. New migration that drops or rewrites data → tell the user to back up first (`DEPLOYMENT.md` → Database).

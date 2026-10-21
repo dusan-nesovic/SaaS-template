@@ -34,6 +34,13 @@
       "replaces": "saas-template",
       "description": "Docker compose project name and server folder."
     },
+    "brandInitial": {
+      "type": "derived",
+      "valueSource": "appTitle",
+      "valueTransform": "brandMark",
+      "replaces": "aria-hidden=\"true\">S</span>",
+      "description": "First letter of appTitle in the logo mark (landing header and footer, auth pages, dashboard sidebar)."
+    },
     "upperName": {
       "type": "derived",
       "valueSource": "name",
@@ -44,7 +51,10 @@
   },
   "forms": {
     "kebabCase": { "identifier": "kebabCase" },
-    "upperCase": { "identifier": "upperCase" }
+    "upperCase": { "identifier": "upperCase" },
+    "firstLetter": { "identifier": "replace", "pattern": "^\\s*(\\S).*$", "replacement": "$1" },
+    "brandMarkSpan": { "identifier": "replace", "pattern": "^(.*)$", "replacement": "aria-hidden=\"true\">$1</span>" },
+    "brandMark": { "identifier": "chain", "steps": [ "firstLetter", "upperCase", "brandMarkSpan" ] }
   },
   "sources": [
     {

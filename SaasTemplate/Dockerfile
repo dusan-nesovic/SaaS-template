@@ -1,13 +1,14 @@
 # syntax=docker/dockerfile:1.7
-# Multi-stage build for SaasTemplate.Web (ASP.NET Core 9).
+# Multi-stage build for SaasTemplate.Web (ASP.NET Core 10).
 # Build context must be the `SaasTemplate/` folder (parent of this Dockerfile).
 
 # ---------- Stage 1: restore + build + publish .NET ----------
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS dotnet-build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS dotnet-build
 WORKDIR /src
 
-# Copy csproj files first for better layer caching (restore step only re-runs when project deps change)
-COPY SaasTemplate.sln ./
+# Copy csproj files first for better layer caching (restore step only re-runs when project deps change).
+# Directory.Build.props holds the target framework, Directory.Packages.props the package versions.
+COPY SaasTemplate.slnx Directory.Build.props Directory.Packages.props ./
 COPY SaasTemplate.Web/SaasTemplate.Web.csproj                       SaasTemplate.Web/
 COPY SaasTemplate.Application/SaasTemplate.Application.csproj       SaasTemplate.Application/
 COPY SaasTemplate.Domain/SaasTemplate.Domain.csproj                 SaasTemplate.Domain/
@@ -29,7 +30,7 @@ RUN dotnet publish SaasTemplate.Web/SaasTemplate.Web.csproj \
 # ---------- Stage 2: development image (hot reload) ----------
 # No sources are copied - docker-compose.development.yml bind mounts them over /src so that
 # dotnet watch sees host edits, and Reinforced.Typings writes libs/_generated back to the host.
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS dev
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS dev
 WORKDIR /src
 
 # procps gives the container `ps`, which Visual Studio's Attach to Process picker runs to list
@@ -57,7 +58,7 @@ ENTRYPOINT ["sh", "-c", \
    fi"]
 
 # ---------- Stage 3: runtime image ----------
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080

@@ -22,7 +22,8 @@ namespace SaasTemplate.Application.Dtos
             Time = DateTimeOffset.UtcNow;
             StackTrace = ex.StackTrace!;
             Source = ex.Source!;
-            InnerException = GetExceptionMessages(ex);
+            // Only the causes: the exception's own message is already in Message.
+            InnerException = ex.InnerException != null ? GetExceptionMessages(ex.InnerException) : null;
             Errors = new Dictionary<string, List<string>>();
         }
 

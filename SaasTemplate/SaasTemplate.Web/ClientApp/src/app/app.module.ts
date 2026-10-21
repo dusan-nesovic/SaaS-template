@@ -14,7 +14,15 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import * as controllers from '@Workspace/_generated/services';
 import { AddLoadingSpinnerDirective } from '@Workspace/directives';
 import { ContentTypeInterceptor, AuthenticationInterceptor, HttpErrorInterceptor } from '@Workspace/interceptors';
-import { LoadingSpinnerService, ErrorHandlerService, SettingsService, AuthService, ToastService, ThemeService, LanguageService } from '@Workspace/services';
+import {
+  LoadingSpinnerService,
+  ErrorHandlerService,
+  SettingsService,
+  AuthService,
+  ToastService,
+  ThemeService,
+  LanguageService,
+} from '@Workspace/services';
 import { SharedModule } from '@Workspace/shared';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,7 +34,7 @@ import { MainPageComponent } from './main-page/main-page.component';
     AppComponent,
     MainPageComponent,
     // Directives
-    AddLoadingSpinnerDirective
+    AddLoadingSpinnerDirective,
   ],
   imports: [
     AppRoutingModule,
@@ -39,9 +47,9 @@ import { MainPageComponent } from './main-page/main-page.component';
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [
     // Controllers
@@ -60,11 +68,11 @@ import { MainPageComponent } from './main-page/main-page.component';
     { provide: HTTP_INTERCEPTORS, useClass: ContentTypeInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { verticalPosition: 'top', horizontalPosition: 'center' } },
-    { provide: ErrorHandler, useClass: ErrorHandlerService }
+    { provide: ErrorHandler, useClass: ErrorHandlerService },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, 'assets/i18n/', '.json');

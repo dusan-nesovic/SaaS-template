@@ -7,8 +7,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 
 // Project modules
-import { Constants } from '@Workspace/common';
-import { Languages } from '@Workspace/models';
+import { ILanguage, Languages } from '@Workspace/models';
 import { LanguageService, Theme, ThemeService } from '@Workspace/services';
 
 interface LandingFeature {
@@ -25,15 +24,13 @@ interface LandingFeature {
 export class MainPageComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly appName = Constants.APP_NAME;
-
   // Bar heights (in %) of the stylised chart in the hero preview.
   readonly previewBars = [35, 52, 44, 68, 58, 80, 72, 95];
 
   year = new Date().getFullYear();
   currentTheme: Theme = 'light';
   selectedLanguage = 'en';
-  languages: any[] = [];
+  languages: ILanguage[] = [];
 
   readonly features: LandingFeature[] = [
     { icon: 'pi-lock', titleKey: 'MAIN_PAGE.FEATURES.ITEM_AUTH_TITLE', textKey: 'MAIN_PAGE.FEATURES.ITEM_AUTH_TEXT' },

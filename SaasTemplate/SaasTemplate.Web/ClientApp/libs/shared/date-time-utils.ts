@@ -32,7 +32,7 @@ export function getTimeDifference(target: Date): number {
 }
 
 // Returns localized date string based on given options and current translation language
-export function convertToDate(date: Date, translate: TranslateService, options: any): string {
+export function convertToDate(date: Date, translate: TranslateService, options: Intl.DateTimeFormatOptions): string {
   return new Date(date).toLocaleDateString(`${translate.instant('DATE_LANGUAGE')}`, options);
 }
 
@@ -67,7 +67,7 @@ export function getTimeUntil(timeDifference: number, translate: TranslateService
   let seconds = Math.floor(timeDifference / 1000);
   let minutes = Math.floor(seconds / 60);
   let hours   = Math.floor(minutes / 60);
-  let days    = Math.floor(hours / 24);
+  const days    = Math.floor(hours / 24);
 
   seconds = seconds % 60;
   minutes = minutes % 60;

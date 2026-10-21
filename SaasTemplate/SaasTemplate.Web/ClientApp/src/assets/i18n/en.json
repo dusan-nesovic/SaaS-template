@@ -78,6 +78,14 @@
     "PAGES": "Pages",
     "EMPTY": "Nothing here yet"
   },
+  "ERROR_LOGS_GRID": {
+    "SEARCH": "Search by message, source or user",
+    "ALL_TIME": "All time",
+    "LAST_DAY": "Last 24 hours",
+    "LAST_WEEK": "Last 7 days",
+    "DETAILS": "Details",
+    "NO_MATCH": "No errors match these filters"
+  },
   "ADMIN": {
     "TAB_USERS": "Users",
     "SEARCH_USERS": "Search by name or e-mail",
@@ -142,6 +150,7 @@
   },
   "TOAST": {
     "SAVED": "Saved",
+    "PREFERENCE_SAVED_DETAIL": "Your preferences were saved.",
     "CREATED": "Created",
     "DELETED": "Deleted",
     "REGISTERED": "Account created",

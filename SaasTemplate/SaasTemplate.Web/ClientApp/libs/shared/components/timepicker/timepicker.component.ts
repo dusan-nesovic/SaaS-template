@@ -3,6 +3,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 // Third-party modules
 import { TranslateService } from '@ngx-translate/core';
+import { noop } from 'rxjs';
 
 @Component({
   selector: 'app-timepicker',
@@ -24,8 +25,8 @@ export class AppTimepickerComponent implements ControlValueAccessor {
   selectedMinute: number | null = null;
 
   private _baseDate: Date | null = null;
-  private onChange: (value: Date | null) => void = () => {};
-  private onTouched: () => void = () => {};
+  private onChange: (value: Date | null) => void = noop;
+  private onTouched: () => void = noop;
 
   readonly hours = Array.from({ length: 24 }, (_, i) => i);
   readonly minutes = Array.from({ length: 12 }, (_, i) => i * 5);
@@ -102,8 +103,8 @@ export class AppTimepickerComponent implements ControlValueAccessor {
     this.selectedMinute = rounded === 60 ? 55 : rounded;
   }
 
-  registerOnChange(fn: any): void { this.onChange = fn; }
-  registerOnTouched(fn: any): void { this.onTouched = fn; }
+  registerOnChange(fn: (value: Date | null) => void): void { this.onChange = fn; }
+  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
 }
 
 function pad(n: number): string {

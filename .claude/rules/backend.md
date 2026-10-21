@@ -47,6 +47,10 @@ paths:
 - `IApplicationDbContext` is the only view of EF in handlers; never cast it to `DbContext`. Update a loaded entity by assigning its properties.
 - New setting: class in `Infrastructure/Settings`, bound in `AppConfig.Settings.cs`, env mapping in `docker-compose.yml`.
 
+## Packages
+- Versions live in `SaasTemplate/Directory.Packages.props`; a `PackageReference` in a `.csproj` has no `Version`. Target framework and nullable/implicit usings come from `Directory.Build.props`.
+- Microsoft and EF Core packages stay on one `10.0.x` patch. MediatR stays on 12.x: 13+ needs a commercial license key.
+
 ## Style
 - Classic constructors, block-scoped namespaces, `_camelCase` fields, `I` prefix on interfaces.
 - Booleans: `Is` / `Has` / `Can`. Dates end with `On` (`CreatedOn`, `ModifiedOn`, `SentOn`, `RespondedOn`), in entities, DTOs and the client; only the event itself keeps `EventDate`.

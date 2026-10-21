@@ -1,50 +1,92 @@
 <app-cms-content [title]="'MENU.SERILOG' | translate" [description]="'PAGE_SUB.LOGS' | translate">
   <div class="panel">
     <div class="panel-body">
-      @if (!errors?.length) {
-        <p class="empty">{{ 'NO_ERRORS' | translate }}</p>
-      } @else {
-        <ul class="log-list">
-          @for (error of errors; track $index) {
-            <li class="log" [class.is-open]="expandedErrorIndex === $index">
-              <button type="button" class="log-summary" [attr.aria-expanded]="expandedErrorIndex === $index" (click)="toggleDetails($index)">
-                <i class="pi pi-chevron-right log-chevron" aria-hidden="true"></i>
-                <span class="log-source">{{ error.source }}</span>
-                <span class="log-message">{{ error.message }}</span>
-                <span class="log-time">{{ error.time | timeAgo }}</span>
+      @if (errors.length) {
+        <div class="filter-bar">
+          <div class="mode-toggle" role="group" [attr.aria-label]="'TIME' | translate">
+            @for (option of periodOptions; track option.value) {
+              <button type="button" class="mode-btn" [class.is-active]="period === option.value" (click)="setPeriod(option.value)">
+                {{ option.labelKey | translate }}
               </button>
+            }
+          </div>
 
-              @if (expandedErrorIndex === $index) {
-                <dl class="log-detail">
-                  <dt>{{ 'TIME' | translate }}</dt>
-                  <dd>{{ error.time | date: 'MMM d, y, h:mm a' }}</dd>
+          <div class="filter-search">
+            <i class="pi pi-search" aria-hidden="true"></i>
+            <input
+              class="input"
+              type="search"
+              [(ngModel)]="search"
+              (ngModelChange)="applyFilters()"
+              [placeholder]="'ERROR_LOGS_GRID.SEARCH' | translate"
+              [attr.aria-label]="'ERROR_LOGS_GRID.SEARCH' | translate" />
+          </div>
+        </div>
+      }
 
-                  <dt>{{ 'MESSAGE' | translate }}</dt>
-                  <dd>{{ error.message }}</dd>
+      @if (isLoaded) {
+        <app-data-grid
+          [rows]="filteredErrors"
+          [columns]="columns"
+          [defaultSort]="{ key: 'time', direction: 'desc' }"
+          [emptyKey]="errors.length ? 'ERROR_LOGS_GRID.NO_MATCH' : 'NO_ERRORS'"
+          [clickable]="true"
+          (rowClick)="openDetails($event)">
+          <ng-template appGridCell="source" let-error>
+            <span class="cell-source">{{ error.source }}</span>
+          </ng-template>
 
-                  <dt>{{ 'USER' | translate }}</dt>
-                  <dd>{{ error.email }}</dd>
+          <ng-template appGridCell="message" let-error>
+            <span class="cell-message" [title]="error.message">{{ error.message }}</span>
+          </ng-template>
 
-                  <dt>{{ 'SOURCE' | translate }}</dt>
-                  <dd>{{ error.source }}</dd>
+          <ng-template appGridCell="user" let-error>
+            <span class="cell-sub">{{ error.email }}</span>
+          </ng-template>
 
-                  <dt>{{ 'STACK_TRACE' | translate }}</dt>
-                  <dd><pre class="log-trace">{{ error.stackTrace }}</pre></dd>
+          <ng-template appGridCell="time" let-error>
+            <span class="cell-date" [title]="error.time | date: 'MMM d, y, h:mm a'">{{ error.time | timeAgo }}</span>
+          </ng-template>
 
-                  @if (error.innerException?.length) {
-                    <dt>{{ 'INNER_EXCEPTION' | translate }}</dt>
-                    <dd>
-                      @for (inner of error.innerException; track $index) {
-                        <pre class="log-trace">{{ inner }}</pre>
-                      }
-                    </dd>
-                  }
-                </dl>
-              }
-            </li>
-          }
-        </ul>
+          <ng-template appGridCell="action" let-error>
+            <span class="row-open-hint">{{ 'ERROR_LOGS_GRID.DETAILS' | translate }} <i class="pi pi-arrow-right" aria-hidden="true"></i></span>
+          </ng-template>
+        </app-data-grid>
       }
     </div>
   </div>
 </app-cms-content>
+
+<app-modal [(visible)]="isDetailOpen" [title]="selected?.source ?? ('ERROR_LOGS_GRID.DETAILS' | translate)" width="56rem" (closed)="onDetailClosed()">
+  @if (selected) {
+    <dl class="log-detail">
+      <dt>{{ 'TIME' | translate }}</dt>
+      <dd>{{ selected.time | date: 'MMM d, y, h:mm a' }}</dd>
+
+      <dt>{{ 'MESSAGE' | translate }}</dt>
+      <dd>{{ selected.message }}</dd>
+
+      <dt>{{ 'USER' | translate }}</dt>
+      <dd>{{ selected.email }}</dd>
+
+      <dt>{{ 'SOURCE' | translate }}</dt>
+      <dd>{{ selected.source }}</dd>
+
+      <dt>{{ 'STACK_TRACE' | translate }}</dt>
+      <dd><pre class="log-trace">{{ selected.stackTrace }}</pre></dd>
+
+      @if (selected.innerException?.length) {
+        <dt>{{ 'INNER_EXCEPTION' | translate }}</dt>
+        <dd>
+          @for (inner of selected.innerException; track $index) {
+            <pre class="log-trace">{{ inner }}</pre>
+          }
+        </dd>
+      }
+    </dl>
+  }
+
+  <div class="modal-actions">
+    <button class="btn primary" type="button" (click)="isDetailOpen = false">{{ 'CLOSE' | translate }}</button>
+  </div>
+</app-modal>

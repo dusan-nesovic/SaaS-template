@@ -1,6 +1,6 @@
 // Angular modules
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { CanActivate, Router, UrlTree } from '@angular/router';
 
 // Third-party modules
 import { Observable } from 'rxjs';
@@ -15,10 +15,7 @@ export class AuthenticationGuard implements CanActivate {
 
   // Public methods
 
-  public canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  public canActivate(): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     if (this.authService.isAuthenticated()) {
       return true;
     }
